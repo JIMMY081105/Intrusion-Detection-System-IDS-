@@ -1,0 +1,684 @@
+root@60d340e59b2f:/workspace/my_project/machine_learning/src# CUDA_VISIBLE_DEVICES=0 python genetic_algorithm.py
+[env_setup] GPU (cuML): enabled
+[env_setup] CUDA_VISIBLE_DEVICES: 0
+[env_setup] wandb:      enabled
+
+
+===== START GA HYPERPARAMETER SEARCH =====
+
+===== RUNNING CONFIG 1/6 : GA_pop20_mut005 (pop=20, mut=0.05) =====
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /root/.netrc.
+wandb: Currently logged in as: hfyym4 (hfyym4-university-of-nottingham) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260323_222302-oly0bo5m
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GA_pop20_mut005_20260323_222301
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/oly0bo5m
+[GA_pop20_mut005] Generation 1/15 - Best Val F1: 0.697221 - Time: 89.72s
+[GA_pop20_mut005] Generation 2/15 - Best Val F1: 0.697221 - Time: 89.90s
+[GA_pop20_mut005] Generation 3/15 - Best Val F1: 0.699825 - Time: 85.57s
+[GA_pop20_mut005] Generation 4/15 - Best Val F1: 0.699825 - Time: 89.97s
+[GA_pop20_mut005] Generation 5/15 - Best Val F1: 0.699825 - Time: 95.28s
+[GA_pop20_mut005] Generation 6/15 - Best Val F1: 0.700463 - Time: 95.88s
+[GA_pop20_mut005] Generation 7/15 - Best Val F1: 0.700463 - Time: 96.96s
+[GA_pop20_mut005] Generation 8/15 - Best Val F1: 0.700463 - Time: 94.87s
+[GA_pop20_mut005] Generation 9/15 - Best Val F1: 0.705192 - Time: 92.22s
+[GA_pop20_mut005] Generation 10/15 - Best Val F1: 0.705192 - Time: 92.57s
+[GA_pop20_mut005] Generation 11/15 - Best Val F1: 0.705192 - Time: 94.16s
+[GA_pop20_mut005] Generation 12/15 - Best Val F1: 0.705192 - Time: 102.27s
+[GA_pop20_mut005] Generation 13/15 - Best Val F1: 0.705192 - Time: 98.53s
+[GA_pop20_mut005] Generation 14/15 - Best Val F1: 0.705192 - Time: 94.44s
+[GA_pop20_mut005] Generation 15/15 - Best Val F1: 0.705192 - Time: 93.31s
+
+===== [GA_pop20_mut005] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       0.99      0.51      0.67       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.92      0.95      2057
+           4       1.00      0.99      0.99     34570
+           5       0.93      0.98      0.95      1046
+           6       0.99      0.97      0.98      1077
+           7       0.99      0.99      0.99      1187
+           8       1.00      1.00      1.00         2
+           9       0.00      0.00      0.00         7
+          10       0.99      0.89      0.94       392
+          11       1.00      0.91      0.96       644
+          12       1.00      0.11      0.19       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.79      0.68      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [GA_pop20_mut005] FINAL RESULTS =====
+Selected Features            : [ 0  1  2  4  5  8  9 10 11 12]
+Number of Selected Features  : 10
+Best Validation F1           : 0.705192047231934
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9969063044912277
+Train Precision (macro) : 0.9261068618996142
+Train Recall (macro)    : 0.726854556912855
+Train F1 Score (macro)  : 0.7593832012293574
+Train Balanced Accuracy : 0.726854556912855
+
+----- TEST METRICS -----
+Accuracy          : 0.9966454926648561
+Precision (macro) : 0.7921429766133925
+Recall (macro)    : 0.6848223552370799
+F1 Score (macro)  : 0.7087214985772158
+Balanced Accuracy : 0.6848223552370799
+Train Time        : 5.750857830047607
+Test Time         : 0.45687127113342285
+Total Search Time : 1405.6641838550568
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0002608118263716097
+Precision Gap (macro) : 0.13396388528622172
+Recall Gap (macro)    : 0.04203220167577515
+F1 Gap (macro)        : 0.05066170265214165
+Balanced Accuracy Gap : 0.04203220167577515
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▂▅▅▆▇▇▇▇█▇██▇█
+wandb:         best_generation ▁
+wandb:             best_val_f1 ▁▁▃▃▃▄▄▄███████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:                gen_time ▃▃▁▃▅▅▆▅▄▄▅█▆▅▄
+wandb:                     +12 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.69733
+wandb:         best_generation 9
+wandb:             best_val_f1 0.70519
+wandb:      best_validation_f1 0.70519
+wandb:          final_accuracy 0.99665
+wandb: final_balanced_accuracy 0.68482
+wandb:                final_f1 0.70872
+wandb:         final_precision 0.79214
+wandb:            final_recall 0.68482
+wandb:                gen_time 93.30659
+wandb:                     +12 ...
+wandb: 
+wandb: 🚀 View run GA_pop20_mut005_20260323_222301 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/oly0bo5m
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260323_222302-oly0bo5m/logs
+
+===== RUNNING CONFIG 2/6 : GA_pop20_mut010 (pop=20, mut=0.1) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260323_224643-k76yn9ko
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GA_pop20_mut010_20260323_224643
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/k76yn9ko
+[GA_pop20_mut010] Generation 1/15 - Best Val F1: 0.698246 - Time: 83.78s
+[GA_pop20_mut010] Generation 2/15 - Best Val F1: 0.698977 - Time: 100.02s
+[GA_pop20_mut010] Generation 3/15 - Best Val F1: 0.700957 - Time: 115.19s
+[GA_pop20_mut010] Generation 4/15 - Best Val F1: 0.709512 - Time: 139.08s
+[GA_pop20_mut010] Generation 5/15 - Best Val F1: 0.709998 - Time: 103.27s
+[GA_pop20_mut010] Generation 6/15 - Best Val F1: 0.709998 - Time: 88.02s
+[GA_pop20_mut010] Generation 7/15 - Best Val F1: 0.709998 - Time: 94.36s
+[GA_pop20_mut010] Generation 8/15 - Best Val F1: 0.709998 - Time: 89.96s
+[GA_pop20_mut010] Generation 9/15 - Best Val F1: 0.709998 - Time: 97.34s
+[GA_pop20_mut010] Generation 10/15 - Best Val F1: 0.709998 - Time: 96.47s
+[GA_pop20_mut010] Generation 11/15 - Best Val F1: 0.709998 - Time: 96.02s
+[GA_pop20_mut010] Generation 12/15 - Best Val F1: 0.709998 - Time: 96.57s
+[GA_pop20_mut010] Generation 13/15 - Best Val F1: 0.709998 - Time: 93.13s
+[GA_pop20_mut010] Generation 14/15 - Best Val F1: 0.709998 - Time: 107.97s
+[GA_pop20_mut010] Generation 15/15 - Best Val F1: 0.709998 - Time: 95.10s
+
+===== [GA_pop20_mut010] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       0.99      0.50      0.67       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.92      0.95      2057
+           4       0.99      0.99      0.99     34570
+           5       0.92      0.98      0.95      1046
+           6       0.99      0.96      0.98      1077
+           7       1.00      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       1.00      0.29      0.44         7
+          10       1.00      0.83      0.91       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.10      0.19       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.86      0.66      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [GA_pop20_mut010] FINAL RESULTS =====
+Selected Features            : [ 1  2  7  8  9 10 11 12 13]
+Number of Selected Features  : 9
+Best Validation F1           : 0.7099980517616217
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.996631877506703
+Train Precision (macro) : 0.9270287062461399
+Train Recall (macro)    : 0.7262318603602462
+Train F1 Score (macro)  : 0.7599421298783394
+Train Balanced Accuracy : 0.7262318603602462
+
+----- TEST METRICS -----
+Accuracy          : 0.9962909512391904
+Precision (macro) : 0.8587865673976568
+Recall (macro)    : 0.664221595629047
+F1 Score (macro)  : 0.7121947456643177
+Balanced Accuracy : 0.664221595629047
+Train Time        : 6.161109209060669
+Test Time         : 0.18185782432556152
+Total Search Time : 1496.30420088768
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003409262675125868
+Precision Gap (macro) : 0.06824213884848307
+Recall Gap (macro)    : 0.062010264731199194
+F1 Gap (macro)        : 0.04774738421402169
+Balanced Accuracy Gap : 0.062010264731199194
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▅▇▇▅▇▇▆▇▇▇████
+wandb:         best_generation ▁
+wandb:             best_val_f1 ▁▁▃████████████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:                gen_time ▁▃▅█▃▂▂▂▃▃▃▃▂▄▂
+wandb:                     +12 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.69236
+wandb:         best_generation 5
+wandb:             best_val_f1 0.71
+wandb:      best_validation_f1 0.71
+wandb:          final_accuracy 0.99629
+wandb: final_balanced_accuracy 0.66422
+wandb:                final_f1 0.71219
+wandb:         final_precision 0.85879
+wandb:            final_recall 0.66422
+wandb:                gen_time 95.09766
+wandb:                     +12 ...
+wandb: 
+wandb: 🚀 View run GA_pop20_mut010_20260323_224643 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/k76yn9ko
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260323_224643-k76yn9ko/logs
+
+===== RUNNING CONFIG 3/6 : GA_pop20_mut020 (pop=20, mut=0.2) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260323_231153-gevpah0q
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GA_pop20_mut020_20260323_231153
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/gevpah0q
+[GA_pop20_mut020] Generation 1/15 - Best Val F1: 0.700934 - Time: 94.93s
+[GA_pop20_mut020] Generation 2/15 - Best Val F1: 0.700934 - Time: 88.23s
+[GA_pop20_mut020] Generation 3/15 - Best Val F1: 0.700934 - Time: 88.57s
+[GA_pop20_mut020] Generation 4/15 - Best Val F1: 0.702576 - Time: 85.82s
+[GA_pop20_mut020] Generation 5/15 - Best Val F1: 0.702576 - Time: 90.64s
+[GA_pop20_mut020] Generation 6/15 - Best Val F1: 0.702576 - Time: 88.77s
+[GA_pop20_mut020] Generation 7/15 - Best Val F1: 0.702576 - Time: 88.92s
+[GA_pop20_mut020] Generation 8/15 - Best Val F1: 0.702576 - Time: 89.79s
+[GA_pop20_mut020] Generation 9/15 - Best Val F1: 0.702576 - Time: 89.39s
+[GA_pop20_mut020] Generation 10/15 - Best Val F1: 0.702576 - Time: 94.10s
+[GA_pop20_mut020] Generation 11/15 - Best Val F1: 0.707302 - Time: 94.55s
+[GA_pop20_mut020] Generation 12/15 - Best Val F1: 0.707302 - Time: 91.16s
+[GA_pop20_mut020] Generation 13/15 - Best Val F1: 0.707302 - Time: 91.91s
+[GA_pop20_mut020] Generation 14/15 - Best Val F1: 0.707302 - Time: 92.49s
+[GA_pop20_mut020] Generation 15/15 - Best Val F1: 0.707302 - Time: 99.42s
+
+===== [GA_pop20_mut020] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       1.00      0.49      0.66       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.91      0.95      2057
+           4       1.00      0.99      0.99     34570
+           5       0.92      0.96      0.94      1046
+           6       0.99      0.96      0.98      1077
+           7       0.99      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       0.67      0.29      0.40         7
+          10       1.00      0.81      0.89       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.10      0.19       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.84      0.66      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [GA_pop20_mut020] FINAL RESULTS =====
+Selected Features            : [ 1  2  4  6  7  8 10 11 13]
+Number of Selected Features  : 9
+Best Validation F1           : 0.7073024738523659
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9964898345540505
+Train Precision (macro) : 0.9260620704320487
+Train Recall (macro)    : 0.7262692154512965
+Train F1 Score (macro)  : 0.7597303049249967
+Train Balanced Accuracy : 0.7262692154512965
+
+----- TEST METRICS -----
+Accuracy          : 0.9961886796740946
+Precision (macro) : 0.8369544116396362
+Recall (macro)    : 0.6607765025922901
+F1 Score (macro)  : 0.7071383768536628
+Balanced Accuracy : 0.6607765025922901
+Train Time        : 6.165093660354614
+Test Time         : 0.18796634674072266
+Total Search Time : 1368.6944422721863
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003011548799558561
+Precision Gap (macro) : 0.08910765879241245
+Recall Gap (macro)    : 0.06549271285900637
+F1 Gap (macro)        : 0.05259192807133395
+Balanced Accuracy Gap : 0.06549271285900637
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▃▄▃▅▄▅▂▄▅█▄▆▃▄
+wandb:         best_generation ▁
+wandb:             best_val_f1 ▁▁▁▃▃▃▃▃▃▃█████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:                gen_time ▆▂▂▁▃▃▃▃▃▅▅▄▄▄█
+wandb:                     +12 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.67243
+wandb:         best_generation 11
+wandb:             best_val_f1 0.7073
+wandb:      best_validation_f1 0.7073
+wandb:          final_accuracy 0.99619
+wandb: final_balanced_accuracy 0.66078
+wandb:                final_f1 0.70714
+wandb:         final_precision 0.83695
+wandb:            final_recall 0.66078
+wandb:                gen_time 99.41781
+wandb:                     +12 ...
+wandb: 
+wandb: 🚀 View run GA_pop20_mut020_20260323_231153 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/gevpah0q
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260323_231153-gevpah0q/logs
+
+===== RUNNING CONFIG 4/6 : GA_pop50_mut005 (pop=50, mut=0.05) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260323_233456-072z1hos
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GA_pop50_mut005_20260323_233456
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/072z1hos
+[GA_pop50_mut005] Generation 1/15 - Best Val F1: 0.697507 - Time: 217.29s
+[GA_pop50_mut005] Generation 2/15 - Best Val F1: 0.704767 - Time: 207.34s
+[GA_pop50_mut005] Generation 3/15 - Best Val F1: 0.705167 - Time: 225.01s
+[GA_pop50_mut005] Generation 4/15 - Best Val F1: 0.705167 - Time: 220.63s
+[GA_pop50_mut005] Generation 5/15 - Best Val F1: 0.705167 - Time: 228.71s
+[GA_pop50_mut005] Generation 6/15 - Best Val F1: 0.705167 - Time: 231.33s
+[GA_pop50_mut005] Generation 7/15 - Best Val F1: 0.705167 - Time: 230.86s
+[GA_pop50_mut005] Generation 8/15 - Best Val F1: 0.709205 - Time: 237.09s
+[GA_pop50_mut005] Generation 9/15 - Best Val F1: 0.709205 - Time: 236.24s
+[GA_pop50_mut005] Generation 10/15 - Best Val F1: 0.709205 - Time: 253.35s
+[GA_pop50_mut005] Generation 11/15 - Best Val F1: 0.710016 - Time: 249.75s
+[GA_pop50_mut005] Generation 12/15 - Best Val F1: 0.710016 - Time: 235.50s
+[GA_pop50_mut005] Generation 13/15 - Best Val F1: 0.710016 - Time: 233.73s
+[GA_pop50_mut005] Generation 14/15 - Best Val F1: 0.710016 - Time: 231.02s
+[GA_pop50_mut005] Generation 15/15 - Best Val F1: 0.710016 - Time: 235.54s
+
+===== [GA_pop50_mut005] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       0.99      0.49      0.66       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.90      0.94      2057
+           4       1.00      0.99      0.99     34570
+           5       0.93      0.97      0.95      1046
+           6       0.99      0.97      0.98      1077
+           7       0.99      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       1.00      0.29      0.44         7
+          10       1.00      0.84      0.91       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.10      0.19       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.86      0.66      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [GA_pop50_mut005] FINAL RESULTS =====
+Selected Features            : [ 1  2  4  5  6  8  9 10 13]
+Number of Selected Features  : 9
+Best Validation F1           : 0.7100157772633259
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9967347166044235
+Train Precision (macro) : 0.9268716323565241
+Train Recall (macro)    : 0.7269299611745091
+Train F1 Score (macro)  : 0.7596423519145025
+Train Balanced Accuracy : 0.7269299611745091
+
+----- TEST METRICS -----
+Accuracy          : 0.9964091317144124
+Precision (macro) : 0.858867997172147
+Recall (macro)    : 0.6625634550740318
+F1 Score (macro)  : 0.7110405951234066
+Balanced Accuracy : 0.6625634550740318
+Train Time        : 6.054985523223877
+Test Time         : 0.18115496635437012
+Total Search Time : 3473.418323993683
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.00032558489001111024
+Precision Gap (macro) : 0.06800363518437713
+Recall Gap (macro)    : 0.06436650610047734
+F1 Gap (macro)        : 0.04860175679109591
+Balanced Accuracy Gap : 0.06436650610047734
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▃▄▆▇▇▆██▇██▇▇▇
+wandb:         best_generation ▁
+wandb:             best_val_f1 ▁▅▅▅▅▅▅████████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:                gen_time ▃▁▄▃▄▅▅▆▅█▇▅▅▅▅
+wandb:                     +12 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.68991
+wandb:         best_generation 11
+wandb:             best_val_f1 0.71002
+wandb:      best_validation_f1 0.71002
+wandb:          final_accuracy 0.99641
+wandb: final_balanced_accuracy 0.66256
+wandb:                final_f1 0.71104
+wandb:         final_precision 0.85887
+wandb:            final_recall 0.66256
+wandb:                gen_time 235.5448
+wandb:                     +12 ...
+wandb: 
+wandb: 🚀 View run GA_pop50_mut005_20260323_233456 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/072z1hos
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260323_233456-072z1hos/logs
+
+===== RUNNING CONFIG 5/6 : GA_pop50_mut010 (pop=50, mut=0.1) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260324_003303-hpk4depr
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GA_pop50_mut010_20260324_003302
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/hpk4depr
+[GA_pop50_mut010] Generation 1/15 - Best Val F1: 0.703705 - Time: 208.74s
+[GA_pop50_mut010] Generation 2/15 - Best Val F1: 0.703705 - Time: 210.60s
+[GA_pop50_mut010] Generation 3/15 - Best Val F1: 0.703705 - Time: 216.26s
+[GA_pop50_mut010] Generation 4/15 - Best Val F1: 0.703705 - Time: 204.23s
+[GA_pop50_mut010] Generation 5/15 - Best Val F1: 0.703705 - Time: 209.53s
+[GA_pop50_mut010] Generation 6/15 - Best Val F1: 0.703705 - Time: 210.08s
+[GA_pop50_mut010] Generation 7/15 - Best Val F1: 0.703705 - Time: 221.17s
+[GA_pop50_mut010] Generation 8/15 - Best Val F1: 0.703705 - Time: 215.90s
+[GA_pop50_mut010] Generation 9/15 - Best Val F1: 0.703705 - Time: 234.72s
+[GA_pop50_mut010] Generation 10/15 - Best Val F1: 0.703705 - Time: 241.90s
+[GA_pop50_mut010] Generation 11/15 - Best Val F1: 0.703705 - Time: 322.15s
+[GA_pop50_mut010] Generation 12/15 - Best Val F1: 0.703705 - Time: 280.77s
+[GA_pop50_mut010] Generation 13/15 - Best Val F1: 0.703705 - Time: 249.47s
+[GA_pop50_mut010] Generation 14/15 - Best Val F1: 0.703705 - Time: 398.50s
+[GA_pop50_mut010] Generation 15/15 - Best Val F1: 0.703705 - Time: 233.43s
+
+===== [GA_pop50_mut010] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       0.99      0.50      0.66       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.92      0.95      2057
+           4       1.00      0.99      0.99     34570
+           5       0.92      0.98      0.95      1046
+           6       0.99      0.97      0.98      1077
+           7       0.99      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       0.00      0.00      0.00         7
+          10       0.98      0.89      0.93       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.13      0.22       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.79      0.65      0.69    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [GA_pop50_mut010] FINAL RESULTS =====
+Selected Features            : [ 0  1  6  8  9 12 13]
+Number of Selected Features  : 7
+Best Validation F1           : 0.7037054530919986
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9966477863174001
+Train Precision (macro) : 0.9243869029536198
+Train Recall (macro)    : 0.7245422262988881
+Train F1 Score (macro)  : 0.7588831716680076
+Train Balanced Accuracy : 0.7245422262988881
+
+----- TEST METRICS -----
+Accuracy          : 0.9962727696276179
+Precision (macro) : 0.7905734642540939
+Recall (macro)    : 0.6508099978914271
+F1 Score (macro)  : 0.6866827032288715
+Balanced Accuracy : 0.6508099978914271
+Train Time        : 5.018899202346802
+Test Time         : 0.23501968383789062
+Total Search Time : 3657.4783737659454
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003750166897822371
+Precision Gap (macro) : 0.1338134386995259
+Recall Gap (macro)    : 0.07373222840746096
+F1 Gap (macro)        : 0.07220046843913608
+Balanced Accuracy Gap : 0.07373222840746096
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▃▅▇▇▇███▇▇▆▆▇▇
+wandb:         best_generation ▁
+wandb:             best_val_f1 ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:                gen_time ▁▁▁▁▁▁▂▁▂▂▅▄▃█▂
+wandb:                     +12 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.68305
+wandb:         best_generation 1
+wandb:             best_val_f1 0.70371
+wandb:      best_validation_f1 0.70371
+wandb:          final_accuracy 0.99627
+wandb: final_balanced_accuracy 0.65081
+wandb:                final_f1 0.68668
+wandb:         final_precision 0.79057
+wandb:            final_recall 0.65081
+wandb:                gen_time 233.42907
+wandb:                     +12 ...
+wandb: 
+wandb: 🚀 View run GA_pop50_mut010_20260324_003302 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/hpk4depr
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260324_003303-hpk4depr/logs
+
+===== RUNNING CONFIG 6/6 : GA_pop50_mut020 (pop=50, mut=0.2) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260324_013413-odkvkuk9
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GA_pop50_mut020_20260324_013413
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/odkvkuk9
+[GA_pop50_mut020] Generation 1/15 - Best Val F1: 0.699651 - Time: 204.18s
+[GA_pop50_mut020] Generation 2/15 - Best Val F1: 0.699651 - Time: 212.53s
+[GA_pop50_mut020] Generation 3/15 - Best Val F1: 0.699768 - Time: 208.29s
+[GA_pop50_mut020] Generation 4/15 - Best Val F1: 0.699768 - Time: 220.87s
+[GA_pop50_mut020] Generation 5/15 - Best Val F1: 0.708653 - Time: 216.28s
+[GA_pop50_mut020] Generation 6/15 - Best Val F1: 0.708653 - Time: 219.16s
+[GA_pop50_mut020] Generation 7/15 - Best Val F1: 0.708653 - Time: 239.21s
+[GA_pop50_mut020] Generation 8/15 - Best Val F1: 0.708653 - Time: 275.50s
+[GA_pop50_mut020] Generation 9/15 - Best Val F1: 0.708653 - Time: 218.45s
+[GA_pop50_mut020] Generation 10/15 - Best Val F1: 0.708653 - Time: 218.27s
+[GA_pop50_mut020] Generation 11/15 - Best Val F1: 0.708653 - Time: 217.19s
+[GA_pop50_mut020] Generation 12/15 - Best Val F1: 0.708653 - Time: 215.05s
+[GA_pop50_mut020] Generation 13/15 - Best Val F1: 0.708653 - Time: 225.81s
+[GA_pop50_mut020] Generation 14/15 - Best Val F1: 0.708799 - Time: 220.82s
+[GA_pop50_mut020] Generation 15/15 - Best Val F1: 0.708799 - Time: 226.73s
+
+===== [GA_pop50_mut020] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       1.00      0.50      0.67       288
+           2       1.00      0.99      1.00     25603
+           3       0.99      0.91      0.95      2057
+           4       0.99      0.99      0.99     34570
+           5       0.92      0.97      0.95      1046
+           6       0.99      0.97      0.98      1077
+           7       1.00      0.99      1.00      1187
+           8       1.00      0.50      0.67         2
+           9       1.00      0.29      0.44         7
+          10       1.00      0.84      0.91       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.10      0.19       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.86      0.66      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [GA_pop50_mut020] FINAL RESULTS =====
+Selected Features            : [ 1  2  5  7  9 10 11 12 13]
+Number of Selected Features  : 9
+Best Validation F1           : 0.7087987076010159
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9966034689161725
+Train Precision (macro) : 0.9271539900254021
+Train Recall (macro)    : 0.7309994725665607
+Train F1 Score (macro)  : 0.7630603313097473
+Train Balanced Accuracy : 0.7309994725665607
+
+----- TEST METRICS -----
+Accuracy          : 0.9962614061203849
+Precision (macro) : 0.8593037599515266
+Recall (macro)    : 0.6642679179650729
+F1 Score (macro)  : 0.7123831657082835
+Balanced Accuracy : 0.6642679179650729
+Train Time        : 5.982481002807617
+Test Time         : 0.171095609664917
+Total Search Time : 3338.371461868286
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003420627957875233
+Precision Gap (macro) : 0.06785023007387547
+Recall Gap (macro)    : 0.06673155460148783
+F1 Gap (macro)        : 0.050677165601463736
+Balanced Accuracy Gap : 0.06673155460148783
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▄▄▅▆█▇▆█▇▆▆▇▆▇
+wandb:         best_generation ▁
+wandb:             best_val_f1 ▁▁▁▁███████████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:                gen_time ▁▂▁▃▂▂▄█▂▂▂▂▃▃▃
+wandb:                     +12 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.67176
+wandb:         best_generation 14
+wandb:             best_val_f1 0.7088
+wandb:      best_validation_f1 0.7088
+wandb:          final_accuracy 0.99626
+wandb: final_balanced_accuracy 0.66427
+wandb:                final_f1 0.71238
+wandb:         final_precision 0.8593
+wandb:            final_recall 0.66427
+wandb:                gen_time 226.72882
+wandb:                     +12 ...
+wandb: 
+wandb: 🚀 View run GA_pop50_mut020_20260324_013413 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga/runs/odkvkuk9
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-ga
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260324_013413-odkvkuk9/logs
+
+===== ALL CONFIG RESULTS (VALIDATION USED FOR SELECTION) =====
+GA_pop20_mut005 | pop=20 | mut=0.05 | val_f1=0.705192 | features=10 | search_time=1405.66s
+GA_pop20_mut010 | pop=20 | mut=0.1 | val_f1=0.709998 | features=9 | search_time=1496.30s
+GA_pop20_mut020 | pop=20 | mut=0.2 | val_f1=0.707302 | features=9 | search_time=1368.69s
+GA_pop50_mut005 | pop=50 | mut=0.05 | val_f1=0.710016 | features=9 | search_time=3473.42s
+GA_pop50_mut010 | pop=50 | mut=0.1 | val_f1=0.703705 | features=7 | search_time=3657.48s
+GA_pop50_mut020 | pop=50 | mut=0.2 | val_f1=0.708799 | features=9 | search_time=3338.37s
+
+===== BEST CONFIG SELECTED =====
+Best Config Name            : GA_pop50_mut005
+Best Population Size        : 50
+Best Mutation Rate          : 0.05
+Best Validation F1          : 0.7100157772633259
+Best Generation             : 11
+Selected Features           : [ 1  2  4  5  6  8  9 10 13]
+Number of Selected Features : 9
+
+===== FINAL BEST CONFIG TEST RESULTS =====
+Accuracy          : 0.9964091317144124
+Precision (macro) : 0.858867997172147
+Recall (macro)    : 0.6625634550740318
+F1 Score (macro)  : 0.7110405951234066
+Balanced Accuracy : 0.6625634550740318
+Train Time        : 6.054985523223877
+Test Time         : 0.18115496635437012
+Search Time       : 3473.418323993683

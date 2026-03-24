@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+src/wandb/
+.env
+data/raw/
+data/processed/
+*.pdf

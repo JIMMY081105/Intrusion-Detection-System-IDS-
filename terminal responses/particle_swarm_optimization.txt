@@ -1,0 +1,684 @@
+root@60d340e59b2f:/workspace/my_project/machine_learning/src# CUDA_VISIBLE_DEVICES=1 python particle_swarm_optimization.py
+[env_setup] GPU (cuML): enabled
+[env_setup] CUDA_VISIBLE_DEVICES: 1
+[env_setup] wandb:      enabled
+
+===== START PSO HYPERPARAMETER SEARCH =====
+
+===== RUNNING CONFIG 1/6 : PSO_swarm20_w070_c115_c215 (swarm=20, w=0.7, c1=1.5, c2=1.5) =====
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /root/.netrc.
+wandb: Currently logged in as: hfyym4 (hfyym4-university-of-nottingham) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260323_222344-v53mxmzt
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run PSO_swarm20_w070_c115_c215_20260323_222343
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/v53mxmzt
+[PSO_swarm20_w070_c115_c215] Iteration 1/15 - Best Val F1: 0.698725 - Time: 87.76s
+[PSO_swarm20_w070_c115_c215] Iteration 2/15 - Best Val F1: 0.698725 - Time: 89.17s
+[PSO_swarm20_w070_c115_c215] Iteration 3/15 - Best Val F1: 0.700621 - Time: 89.12s
+[PSO_swarm20_w070_c115_c215] Iteration 4/15 - Best Val F1: 0.701124 - Time: 92.82s
+[PSO_swarm20_w070_c115_c215] Iteration 5/15 - Best Val F1: 0.701124 - Time: 82.03s
+[PSO_swarm20_w070_c115_c215] Iteration 6/15 - Best Val F1: 0.701124 - Time: 88.92s
+[PSO_swarm20_w070_c115_c215] Iteration 7/15 - Best Val F1: 0.701124 - Time: 94.34s
+[PSO_swarm20_w070_c115_c215] Iteration 8/15 - Best Val F1: 0.701124 - Time: 93.02s
+[PSO_swarm20_w070_c115_c215] Iteration 9/15 - Best Val F1: 0.702380 - Time: 86.19s
+[PSO_swarm20_w070_c115_c215] Iteration 10/15 - Best Val F1: 0.708216 - Time: 94.96s
+[PSO_swarm20_w070_c115_c215] Iteration 11/15 - Best Val F1: 0.708216 - Time: 98.27s
+[PSO_swarm20_w070_c115_c215] Iteration 12/15 - Best Val F1: 0.708216 - Time: 91.65s
+[PSO_swarm20_w070_c115_c215] Iteration 13/15 - Best Val F1: 0.708216 - Time: 89.60s
+[PSO_swarm20_w070_c115_c215] Iteration 14/15 - Best Val F1: 0.708216 - Time: 86.45s
+[PSO_swarm20_w070_c115_c215] Iteration 15/15 - Best Val F1: 0.708216 - Time: 96.00s
+
+===== [PSO_swarm20_w070_c115_c215] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       1.00      0.50      0.67       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.93      0.96      2057
+           4       0.99      0.99      0.99     34570
+           5       0.92      0.98      0.95      1046
+           6       0.99      0.96      0.98      1077
+           7       0.99      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       1.00      0.29      0.44         7
+          10       0.99      0.82      0.90       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.10      0.19       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.86      0.66      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [PSO_swarm20_w070_c115_c215] FINAL RESULTS =====
+Selected Features            : [ 1  2  5  6  8 10 11 12 13]
+Number of Selected Features  : 9
+Best Validation F1           : 0.7082163166227465
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9964739257433534
+Train Precision (macro) : 0.9260335525479593
+Train Recall (macro)    : 0.7307495380116246
+Train F1 Score (macro)  : 0.7622419627544612
+Train Balanced Accuracy : 0.7307495380116246
+
+----- TEST METRICS -----
+Accuracy          : 0.9961364075408234
+Precision (macro) : 0.858722062879751
+Recall (macro)    : 0.6645986396527047
+F1 Score (macro)  : 0.7121301874751229
+Balanced Accuracy : 0.6645986396527047
+Train Time        : 6.1685261726379395
+Test Time         : 0.19130396842956543
+Total Search Time : 1360.3174617290497
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003375182025299184
+Precision Gap (macro) : 0.06731148966820832
+Recall Gap (macro)    : 0.06615089835891985
+F1 Gap (macro)        : 0.0501117752793383
+Balanced Accuracy Gap : 0.06615089835891985
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▃▁▄▅▃▅▅▄█▇▄▇▄▄▅
+wandb:             best_val_f1 ▁▁▂▃▃▃▃▃▄██████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:               iter_time ▃▄▄▆▁▄▆▆▃▇█▅▄▃▇
+wandb:               iteration ▁▁▂▃▃▃▄▅▅▅▆▇▇▇█
+wandb:                     +11 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.6676
+wandb:             best_val_f1 0.70822
+wandb:      best_validation_f1 0.70822
+wandb:          final_accuracy 0.99614
+wandb: final_balanced_accuracy 0.6646
+wandb:                final_f1 0.71213
+wandb:         final_precision 0.85872
+wandb:            final_recall 0.6646
+wandb:               iter_time 95.99779
+wandb:               iteration 15
+wandb:                     +11 ...
+wandb: 
+wandb: 🚀 View run PSO_swarm20_w070_c115_c215_20260323_222343 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/v53mxmzt
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260323_222344-v53mxmzt/logs
+
+===== RUNNING CONFIG 2/6 : PSO_swarm20_w050_c115_c215 (swarm=20, w=0.5, c1=1.5, c2=1.5) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260323_224815-4qcw4u74
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run PSO_swarm20_w050_c115_c215_20260323_224815
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/4qcw4u74
+[PSO_swarm20_w050_c115_c215] Iteration 1/15 - Best Val F1: 0.706098 - Time: 114.21s
+[PSO_swarm20_w050_c115_c215] Iteration 2/15 - Best Val F1: 0.708678 - Time: 122.55s
+[PSO_swarm20_w050_c115_c215] Iteration 3/15 - Best Val F1: 0.708678 - Time: 85.02s
+[PSO_swarm20_w050_c115_c215] Iteration 4/15 - Best Val F1: 0.710035 - Time: 87.49s
+[PSO_swarm20_w050_c115_c215] Iteration 5/15 - Best Val F1: 0.710035 - Time: 85.67s
+[PSO_swarm20_w050_c115_c215] Iteration 6/15 - Best Val F1: 0.710035 - Time: 83.51s
+[PSO_swarm20_w050_c115_c215] Iteration 7/15 - Best Val F1: 0.710035 - Time: 87.34s
+[PSO_swarm20_w050_c115_c215] Iteration 8/15 - Best Val F1: 0.710035 - Time: 85.71s
+[PSO_swarm20_w050_c115_c215] Iteration 9/15 - Best Val F1: 0.710035 - Time: 86.21s
+[PSO_swarm20_w050_c115_c215] Iteration 10/15 - Best Val F1: 0.710035 - Time: 86.15s
+[PSO_swarm20_w050_c115_c215] Iteration 11/15 - Best Val F1: 0.710035 - Time: 85.16s
+[PSO_swarm20_w050_c115_c215] Iteration 12/15 - Best Val F1: 0.710035 - Time: 85.47s
+[PSO_swarm20_w050_c115_c215] Iteration 13/15 - Best Val F1: 0.710035 - Time: 84.86s
+[PSO_swarm20_w050_c115_c215] Iteration 14/15 - Best Val F1: 0.710035 - Time: 86.66s
+[PSO_swarm20_w050_c115_c215] Iteration 15/15 - Best Val F1: 0.710035 - Time: 87.47s
+
+===== [PSO_swarm20_w050_c115_c215] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       1.00      0.50      0.67       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.93      0.96      2057
+           4       0.99      0.99      0.99     34570
+           5       0.93      0.98      0.95      1046
+           6       0.99      0.97      0.98      1077
+           7       0.99      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       1.00      0.29      0.44         7
+          10       0.98      0.83      0.90       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.12      0.21       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.86      0.67      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [PSO_swarm20_w050_c115_c215] FINAL RESULTS =====
+Selected Features            : [ 1  2  5  6  7  8 10 12 13]
+Number of Selected Features  : 9
+Best Validation F1           : 0.710034611597699
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9964943799285354
+Train Precision (macro) : 0.9258598026670892
+Train Recall (macro)    : 0.7320871104090018
+Train F1 Score (macro)  : 0.765132242628933
+Train Balanced Accuracy : 0.7320871104090018
+
+----- TEST METRICS -----
+Accuracy          : 0.9961500437495029
+Precision (macro) : 0.8579121680267804
+Recall (macro)    : 0.6667737418866684
+F1 Score (macro)  : 0.7140593464530636
+Balanced Accuracy : 0.6667737418866684
+Train Time        : 5.908185958862305
+Test Time         : 0.19371271133422852
+Total Search Time : 1353.4997518062592
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003443361790325117
+Precision Gap (macro) : 0.06794763464030884
+Recall Gap (macro)    : 0.06531336852233338
+F1 Gap (macro)        : 0.05107289617586941
+Balanced Accuracy Gap : 0.06531336852233338
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▁▁▄▂▃█▃▃▄▃▃▃▅▃
+wandb:             best_val_f1 ▁▆▆████████████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:               iter_time ▇█▁▂▁▁▂▁▁▁▁▁▁▂▂
+wandb:               iteration ▁▁▂▃▃▃▄▅▅▅▆▇▇▇█
+wandb:                     +11 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.6616
+wandb:             best_val_f1 0.71003
+wandb:      best_validation_f1 0.71003
+wandb:          final_accuracy 0.99615
+wandb: final_balanced_accuracy 0.66677
+wandb:                final_f1 0.71406
+wandb:         final_precision 0.85791
+wandb:            final_recall 0.66677
+wandb:               iter_time 87.47441
+wandb:               iteration 15
+wandb:                     +11 ...
+wandb: 
+wandb: 🚀 View run PSO_swarm20_w050_c115_c215_20260323_224815 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/4qcw4u74
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260323_224815-4qcw4u74/logs
+
+===== RUNNING CONFIG 3/6 : PSO_swarm20_w090_c115_c215 (swarm=20, w=0.9, c1=1.5, c2=1.5) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260323_231243-fsgghtzy
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run PSO_swarm20_w090_c115_c215_20260323_231242
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/fsgghtzy
+[PSO_swarm20_w090_c115_c215] Iteration 1/15 - Best Val F1: 0.700934 - Time: 85.29s
+[PSO_swarm20_w090_c115_c215] Iteration 2/15 - Best Val F1: 0.700934 - Time: 89.05s
+[PSO_swarm20_w090_c115_c215] Iteration 3/15 - Best Val F1: 0.704464 - Time: 88.26s
+[PSO_swarm20_w090_c115_c215] Iteration 4/15 - Best Val F1: 0.704464 - Time: 86.69s
+[PSO_swarm20_w090_c115_c215] Iteration 5/15 - Best Val F1: 0.704464 - Time: 85.72s
+[PSO_swarm20_w090_c115_c215] Iteration 6/15 - Best Val F1: 0.708653 - Time: 92.11s
+[PSO_swarm20_w090_c115_c215] Iteration 7/15 - Best Val F1: 0.708653 - Time: 90.55s
+[PSO_swarm20_w090_c115_c215] Iteration 8/15 - Best Val F1: 0.708653 - Time: 92.74s
+[PSO_swarm20_w090_c115_c215] Iteration 9/15 - Best Val F1: 0.708653 - Time: 90.34s
+[PSO_swarm20_w090_c115_c215] Iteration 10/15 - Best Val F1: 0.708653 - Time: 93.03s
+[PSO_swarm20_w090_c115_c215] Iteration 11/15 - Best Val F1: 0.708653 - Time: 93.52s
+[PSO_swarm20_w090_c115_c215] Iteration 12/15 - Best Val F1: 0.710035 - Time: 93.45s
+[PSO_swarm20_w090_c115_c215] Iteration 13/15 - Best Val F1: 0.710035 - Time: 92.62s
+[PSO_swarm20_w090_c115_c215] Iteration 14/15 - Best Val F1: 0.710594 - Time: 94.85s
+[PSO_swarm20_w090_c115_c215] Iteration 15/15 - Best Val F1: 0.710594 - Time: 91.20s
+
+===== [PSO_swarm20_w090_c115_c215] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       1.00      0.51      0.68       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.93      0.96      2057
+           4       0.99      0.99      0.99     34570
+           5       0.93      0.96      0.94      1046
+           6       0.99      0.97      0.98      1077
+           7       0.99      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       1.00      0.29      0.44         7
+          10       1.00      0.80      0.89       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.10      0.19       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.86      0.66      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [PSO_swarm20_w090_c115_c215] FINAL RESULTS =====
+Selected Features            : [ 1  2  4  5  6  7  8 10 12 13]
+Number of Selected Features  : 10
+Best Validation F1           : 0.7105937297414807
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9965807420437481
+Train Precision (macro) : 0.9269051974703253
+Train Recall (macro)    : 0.732088623354621
+Train F1 Score (macro)  : 0.7635654261572231
+Train Balanced Accuracy : 0.732088623354621
+
+----- TEST METRICS -----
+Accuracy          : 0.9962409518073658
+Precision (macro) : 0.8588589998395121
+Recall (macro)    : 0.6635699474875437
+F1 Score (macro)  : 0.7118155865941098
+Balanced Accuracy : 0.6635699474875437
+Train Time        : 5.907309293746948
+Test Time         : 0.17788910865783691
+Total Search Time : 1359.4182369709015
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003397902363823091
+Precision Gap (macro) : 0.06804619763081321
+Recall Gap (macro)    : 0.06851867586707727
+F1 Gap (macro)        : 0.0517498395631133
+Balanced Accuracy Gap : 0.06851867586707727
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▃▂▄▄▅▇▆▃▆█▇▇▆▇
+wandb:             best_val_f1 ▁▁▄▄▄▇▇▇▇▇▇████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:               iter_time ▁▄▃▂▁▆▅▆▅▇▇▇▆█▅
+wandb:               iteration ▁▁▂▃▃▃▄▅▅▅▆▇▇▇█
+wandb:                     +11 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.67822
+wandb:             best_val_f1 0.71059
+wandb:      best_validation_f1 0.71059
+wandb:          final_accuracy 0.99624
+wandb: final_balanced_accuracy 0.66357
+wandb:                final_f1 0.71182
+wandb:         final_precision 0.85886
+wandb:            final_recall 0.66357
+wandb:               iter_time 91.20179
+wandb:               iteration 15
+wandb:                     +11 ...
+wandb: 
+wandb: 🚀 View run PSO_swarm20_w090_c115_c215_20260323_231242 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/fsgghtzy
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260323_231243-fsgghtzy/logs
+
+===== RUNNING CONFIG 4/6 : PSO_swarm50_w070_c115_c215 (swarm=50, w=0.7, c1=1.5, c2=1.5) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260323_233656-xm08vt11
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run PSO_swarm50_w070_c115_c215_20260323_233655
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/xm08vt11
+[PSO_swarm50_w070_c115_c215] Iteration 1/15 - Best Val F1: 0.701914 - Time: 219.93s
+[PSO_swarm50_w070_c115_c215] Iteration 2/15 - Best Val F1: 0.702576 - Time: 218.55s
+[PSO_swarm50_w070_c115_c215] Iteration 3/15 - Best Val F1: 0.703911 - Time: 235.24s
+[PSO_swarm50_w070_c115_c215] Iteration 4/15 - Best Val F1: 0.703911 - Time: 212.83s
+[PSO_swarm50_w070_c115_c215] Iteration 5/15 - Best Val F1: 0.703911 - Time: 219.82s
+[PSO_swarm50_w070_c115_c215] Iteration 6/15 - Best Val F1: 0.703911 - Time: 215.25s
+[PSO_swarm50_w070_c115_c215] Iteration 7/15 - Best Val F1: 0.707630 - Time: 215.38s
+[PSO_swarm50_w070_c115_c215] Iteration 8/15 - Best Val F1: 0.707630 - Time: 221.58s
+[PSO_swarm50_w070_c115_c215] Iteration 9/15 - Best Val F1: 0.709205 - Time: 260.06s
+[PSO_swarm50_w070_c115_c215] Iteration 10/15 - Best Val F1: 0.709205 - Time: 243.36s
+[PSO_swarm50_w070_c115_c215] Iteration 11/15 - Best Val F1: 0.709205 - Time: 229.32s
+[PSO_swarm50_w070_c115_c215] Iteration 12/15 - Best Val F1: 0.709205 - Time: 220.58s
+[PSO_swarm50_w070_c115_c215] Iteration 13/15 - Best Val F1: 0.709205 - Time: 242.73s
+[PSO_swarm50_w070_c115_c215] Iteration 14/15 - Best Val F1: 0.709205 - Time: 275.45s
+[PSO_swarm50_w070_c115_c215] Iteration 15/15 - Best Val F1: 0.709205 - Time: 242.68s
+
+===== [PSO_swarm50_w070_c115_c215] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       1.00      0.50      0.67       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.91      0.95      2057
+           4       0.99      0.99      0.99     34570
+           5       0.92      0.98      0.95      1046
+           6       0.99      0.96      0.98      1077
+           7       0.99      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       0.67      0.29      0.40         7
+          10       1.00      0.82      0.90       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.13      0.22       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.84      0.66      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [PSO_swarm50_w070_c115_c215] FINAL RESULTS =====
+Selected Features            : [ 1  2  4  5  6  8 10 11 13]
+Number of Selected Features  : 9
+Best Validation F1           : 0.7092048023221798
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9965199476600128
+Train Precision (macro) : 0.9263763457037686
+Train Recall (macro)    : 0.7337728544875528
+Train F1 Score (macro)  : 0.7661392619751485
+Train Balanced Accuracy : 0.7337728544875528
+
+----- TEST METRICS -----
+Accuracy          : 0.9961909523755412
+Precision (macro) : 0.8368627896577888
+Recall (macro)    : 0.6647486344180683
+F1 Score (macro)  : 0.7111093933423088
+Balanced Accuracy : 0.6647486344180683
+Train Time        : 5.856228828430176
+Test Time         : 0.19077682495117188
+Total Search Time : 3472.7824172973633
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003289952844716115
+Precision Gap (macro) : 0.08951355604597977
+Recall Gap (macro)    : 0.0690242200694845
+F1 Gap (macro)        : 0.05502986863283965
+Balanced Accuracy Gap : 0.0690242200694845
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▅▃▂▆█▇▅▆▇▇▄▇▆▃
+wandb:             best_val_f1 ▁▂▃▃▃▃▆▆███████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:               iter_time ▂▂▄▁▂▁▁▂▆▄▃▂▄█▄
+wandb:               iteration ▁▁▂▃▃▃▄▅▅▅▆▇▇▇█
+wandb:                     +11 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.6592
+wandb:             best_val_f1 0.7092
+wandb:      best_validation_f1 0.7092
+wandb:          final_accuracy 0.99619
+wandb: final_balanced_accuracy 0.66475
+wandb:                final_f1 0.71111
+wandb:         final_precision 0.83686
+wandb:            final_recall 0.66475
+wandb:               iter_time 242.685
+wandb:               iteration 15
+wandb:                     +11 ...
+wandb: 
+wandb: 🚀 View run PSO_swarm50_w070_c115_c215_20260323_233655 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/xm08vt11
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260323_233656-xm08vt11/logs
+
+===== RUNNING CONFIG 5/6 : PSO_swarm50_w050_c115_c215 (swarm=50, w=0.5, c1=1.5, c2=1.5) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260324_003823-czr37muz
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run PSO_swarm50_w050_c115_c215_20260324_003822
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/czr37muz
+[PSO_swarm50_w050_c115_c215] Iteration 1/15 - Best Val F1: 0.703705 - Time: 207.95s
+[PSO_swarm50_w050_c115_c215] Iteration 2/15 - Best Val F1: 0.703705 - Time: 213.13s
+[PSO_swarm50_w050_c115_c215] Iteration 3/15 - Best Val F1: 0.703705 - Time: 218.04s
+[PSO_swarm50_w050_c115_c215] Iteration 4/15 - Best Val F1: 0.703705 - Time: 212.28s
+[PSO_swarm50_w050_c115_c215] Iteration 5/15 - Best Val F1: 0.703705 - Time: 217.70s
+[PSO_swarm50_w050_c115_c215] Iteration 6/15 - Best Val F1: 0.703705 - Time: 218.07s
+[PSO_swarm50_w050_c115_c215] Iteration 7/15 - Best Val F1: 0.703705 - Time: 248.40s
+[PSO_swarm50_w050_c115_c215] Iteration 8/15 - Best Val F1: 0.703705 - Time: 382.54s
+[PSO_swarm50_w050_c115_c215] Iteration 9/15 - Best Val F1: 0.703705 - Time: 355.55s
+[PSO_swarm50_w050_c115_c215] Iteration 10/15 - Best Val F1: 0.703705 - Time: 241.37s
+[PSO_swarm50_w050_c115_c215] Iteration 11/15 - Best Val F1: 0.703705 - Time: 439.99s
+[PSO_swarm50_w050_c115_c215] Iteration 12/15 - Best Val F1: 0.703705 - Time: 215.23s
+[PSO_swarm50_w050_c115_c215] Iteration 13/15 - Best Val F1: 0.703705 - Time: 214.07s
+[PSO_swarm50_w050_c115_c215] Iteration 14/15 - Best Val F1: 0.703705 - Time: 210.79s
+[PSO_swarm50_w050_c115_c215] Iteration 15/15 - Best Val F1: 0.703705 - Time: 213.80s
+
+===== [PSO_swarm50_w050_c115_c215] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       0.99      0.50      0.66       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.92      0.95      2057
+           4       1.00      0.99      0.99     34570
+           5       0.92      0.98      0.95      1046
+           6       0.99      0.97      0.98      1077
+           7       0.99      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       0.00      0.00      0.00         7
+          10       0.98      0.89      0.93       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.13      0.22       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.79      0.65      0.69    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [PSO_swarm50_w050_c115_c215] FINAL RESULTS =====
+Selected Features            : [ 0  1  6  8  9 12 13]
+Number of Selected Features  : 7
+Best Validation F1           : 0.7037054530919986
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.9966477863174001
+Train Precision (macro) : 0.9243869029536198
+Train Recall (macro)    : 0.7245422262988881
+Train F1 Score (macro)  : 0.7588831716680076
+Train Balanced Accuracy : 0.7245422262988881
+
+----- TEST METRICS -----
+Accuracy          : 0.9962727696276179
+Precision (macro) : 0.7905734642540939
+Recall (macro)    : 0.6508099978914271
+F1 Score (macro)  : 0.6866827032288715
+Balanced Accuracy : 0.6508099978914271
+Train Time        : 5.122184753417969
+Test Time         : 0.20924139022827148
+Total Search Time : 3808.911616563797
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003750166897822371
+Precision Gap (macro) : 0.1338134386995259
+Recall Gap (macro)    : 0.07373222840746096
+F1 Gap (macro)        : 0.07220046843913608
+Balanced Accuracy Gap : 0.07373222840746096
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▁▆▇▅▆▅▇█▇▆███▇▆
+wandb:             best_val_f1 ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:               iter_time ▁▁▁▁▁▁▂▆▅▂█▁▁▁▁
+wandb:               iteration ▁▁▂▃▃▃▄▅▅▅▆▇▇▇█
+wandb:                     +11 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.65517
+wandb:             best_val_f1 0.70371
+wandb:      best_validation_f1 0.70371
+wandb:          final_accuracy 0.99627
+wandb: final_balanced_accuracy 0.65081
+wandb:                final_f1 0.68668
+wandb:         final_precision 0.79057
+wandb:            final_recall 0.65081
+wandb:               iter_time 213.79965
+wandb:               iteration 15
+wandb:                     +11 ...
+wandb: 
+wandb: 🚀 View run PSO_swarm50_w050_c115_c215_20260324_003822 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/czr37muz
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260324_003823-czr37muz/logs
+
+===== RUNNING CONFIG 6/6 : PSO_swarm50_w090_c115_c215 (swarm=50, w=0.9, c1=1.5, c2=1.5) =====
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260324_014536-74ppy71n
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run PSO_swarm50_w090_c115_c215_20260324_014536
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/74ppy71n
+[PSO_swarm50_w090_c115_c215] Iteration 1/15 - Best Val F1: 0.703851 - Time: 217.45s
+[PSO_swarm50_w090_c115_c215] Iteration 2/15 - Best Val F1: 0.703851 - Time: 237.16s
+[PSO_swarm50_w090_c115_c215] Iteration 3/15 - Best Val F1: 0.703851 - Time: 277.75s
+[PSO_swarm50_w090_c115_c215] Iteration 4/15 - Best Val F1: 0.703851 - Time: 221.78s
+[PSO_swarm50_w090_c115_c215] Iteration 5/15 - Best Val F1: 0.703851 - Time: 228.44s
+[PSO_swarm50_w090_c115_c215] Iteration 6/15 - Best Val F1: 0.703851 - Time: 221.66s
+[PSO_swarm50_w090_c115_c215] Iteration 7/15 - Best Val F1: 0.703851 - Time: 228.19s
+[PSO_swarm50_w090_c115_c215] Iteration 8/15 - Best Val F1: 0.703851 - Time: 231.21s
+[PSO_swarm50_w090_c115_c215] Iteration 9/15 - Best Val F1: 0.709998 - Time: 230.05s
+[PSO_swarm50_w090_c115_c215] Iteration 10/15 - Best Val F1: 0.709998 - Time: 226.90s
+[PSO_swarm50_w090_c115_c215] Iteration 11/15 - Best Val F1: 0.709998 - Time: 293.88s
+[PSO_swarm50_w090_c115_c215] Iteration 12/15 - Best Val F1: 0.709998 - Time: 246.97s
+[PSO_swarm50_w090_c115_c215] Iteration 13/15 - Best Val F1: 0.709998 - Time: 239.33s
+[PSO_swarm50_w090_c115_c215] Iteration 14/15 - Best Val F1: 0.709998 - Time: 244.55s
+[PSO_swarm50_w090_c115_c215] Iteration 15/15 - Best Val F1: 0.709998 - Time: 239.33s
+
+===== [PSO_swarm50_w090_c115_c215] CLASSIFICATION REPORT =====
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372704
+           1       0.99      0.50      0.67       288
+           2       1.00      1.00      1.00     25603
+           3       0.99      0.92      0.95      2057
+           4       0.99      0.99      0.99     34570
+           5       0.92      0.98      0.95      1046
+           6       0.99      0.96      0.98      1077
+           7       1.00      0.99      0.99      1187
+           8       1.00      0.50      0.67         2
+           9       1.00      0.29      0.44         7
+          10       1.00      0.83      0.91       392
+          11       1.00      0.91      0.95       644
+          12       1.00      0.10      0.19       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440005
+   macro avg       0.86      0.66      0.71    440005
+weighted avg       1.00      1.00      1.00    440005
+
+
+===== [PSO_swarm50_w090_c115_c215] FINAL RESULTS =====
+Selected Features            : [ 1  2  7  8  9 10 11 12 13]
+Number of Selected Features  : 9
+Best Validation F1           : 0.7099980517616217
+
+----- TRAIN METRICS -----
+Train Accuracy          : 0.996631877506703
+Train Precision (macro) : 0.9270287062461399
+Train Recall (macro)    : 0.7262318603602462
+Train F1 Score (macro)  : 0.7599421298783394
+Train Balanced Accuracy : 0.7262318603602462
+
+----- TEST METRICS -----
+Accuracy          : 0.9962909512391904
+Precision (macro) : 0.8587865673976568
+Recall (macro)    : 0.664221595629047
+F1 Score (macro)  : 0.7121947456643177
+Balanced Accuracy : 0.664221595629047
+Train Time        : 6.346448659896851
+Test Time         : 0.18850183486938477
+Total Search Time : 3584.6683757305145
+
+----- TRAIN-TEST GAP -----
+Accuracy Gap          : 0.0003409262675125868
+Precision Gap (macro) : 0.06824213884848307
+Recall Gap (macro)    : 0.062010264731199194
+F1 Gap (macro)        : 0.04774738421402169
+Balanced Accuracy Gap : 0.062010264731199194
+wandb: 
+wandb: Run history:
+wandb:              avg_val_f1 ▂▁▂▅▂▆▄▅█▅▆▇▇▄█
+wandb:             best_val_f1 ▁▁▁▁▁▁▁▁███████
+wandb:      best_validation_f1 ▁
+wandb:          final_accuracy ▁
+wandb: final_balanced_accuracy ▁
+wandb:                final_f1 ▁
+wandb:         final_precision ▁
+wandb:            final_recall ▁
+wandb:               iter_time ▁▃▇▁▂▁▂▂▂▂█▄▃▃▃
+wandb:               iteration ▁▁▂▃▃▃▄▅▅▅▆▇▇▇█
+wandb:                     +11 ...
+wandb: 
+wandb: Run summary:
+wandb:              avg_val_f1 0.67589
+wandb:             best_val_f1 0.71
+wandb:      best_validation_f1 0.71
+wandb:          final_accuracy 0.99629
+wandb: final_balanced_accuracy 0.66422
+wandb:                final_f1 0.71219
+wandb:         final_precision 0.85879
+wandb:            final_recall 0.66422
+wandb:               iter_time 239.32969
+wandb:               iteration 15
+wandb:                     +11 ...
+wandb: 
+wandb: 🚀 View run PSO_swarm50_w090_c115_c215_20260324_014536 at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso/runs/74ppy71n
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-pso
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260324_014536-74ppy71n/logs
+
+===== ALL CONFIG RESULTS (VALIDATION USED FOR SELECTION) =====
+PSO_swarm20_w070_c115_c215 | swarm=20 | w=0.7 | c1=1.5 | c2=1.5 | val_f1=0.708216 | features=9 | search_time=1360.32s
+PSO_swarm20_w050_c115_c215 | swarm=20 | w=0.5 | c1=1.5 | c2=1.5 | val_f1=0.710035 | features=9 | search_time=1353.50s
+PSO_swarm20_w090_c115_c215 | swarm=20 | w=0.9 | c1=1.5 | c2=1.5 | val_f1=0.710594 | features=10 | search_time=1359.42s
+PSO_swarm50_w070_c115_c215 | swarm=50 | w=0.7 | c1=1.5 | c2=1.5 | val_f1=0.709205 | features=9 | search_time=3472.78s
+PSO_swarm50_w050_c115_c215 | swarm=50 | w=0.5 | c1=1.5 | c2=1.5 | val_f1=0.703705 | features=7 | search_time=3808.91s
+PSO_swarm50_w090_c115_c215 | swarm=50 | w=0.9 | c1=1.5 | c2=1.5 | val_f1=0.709998 | features=9 | search_time=3584.67s
+
+===== BEST CONFIG SELECTED =====
+Best Config Name            : PSO_swarm20_w090_c115_c215
+Best Swarm Size             : 20
+Best Inertia Weight         : 0.9
+Best Cognitive Weight       : 1.5
+Best Social Weight          : 1.5
+Best Validation F1          : 0.7105937297414807
+Selected Features           : [ 1  2  4  5  6  7  8 10 12 13]
+Number of Selected Features : 10
+
+===== FINAL BEST CONFIG TEST RESULTS =====
+Accuracy          : 0.9962409518073658
+Precision (macro) : 0.8588589998395121
+Recall (macro)    : 0.6635699474875437
+F1 Score (macro)  : 0.7118155865941098
+Balanced Accuracy : 0.6635699474875437
+Train Time        : 5.907309293746948
+Test Time         : 0.17788910865783691
+Search Time       : 1359.4182369709015

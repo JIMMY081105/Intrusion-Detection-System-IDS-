@@ -1,6 +1,8 @@
+
 #the core of particle swarm optimization is to treat each particle as one candidate solution
 #each particle updates its movement by following personal best and global best
 #through iterations position update and velocity update until a better subset is found
+#(high score version: one wandb run per config, validation for search, test only once, safe overlap handling)
 
 #allow gpu run - graceful fallback if cuML not available
 from env_setup import GPU_AVAILABLE, WANDB_AVAILABLE, DATA_DIR, TARGET_COLUMN, init_wandb
@@ -17,7 +19,7 @@ import random
 #get time to record the running time
 import time
 
-#for unique wandb run names
+#(for unique wandb run names)
 from datetime import datetime
 
 #remove warning here
@@ -39,11 +41,11 @@ from sklearn.metrics import (
     classification_report,
 )
 
-#split train into train_inner and val_inner so PSO search never touches the test set
+#(split train into train_inner and val_inner so PSO search never touches the test set)
 from sklearn.model_selection import train_test_split
 
 
-#global seed for reproducibility
+#(global seed for reproducibility)
 GLOBAL_SEED = 42
 random.seed(GLOBAL_SEED)
 np.random.seed(GLOBAL_SEED)
@@ -51,48 +53,48 @@ np.random.seed(GLOBAL_SEED)
 #define number of iterations
 ITERATIONS = 15
 
-#validation split ratio used only inside training data for PSO fitness
+#(validation split ratio used only inside training data for PSO fitness)
 VAL_SIZE = 0.20
 
-#hyperparameter study for PSO
+#(hyperparameter study for PSO)
 PSO_CONFIGS = [
     {
-        "name": "PSO_swarm20_w070_c115_c215",
+        "name": "PSO_RAW_swarm20_w070_c115_c215",
         "swarm_size": 20,
         "w": 0.70,
         "c1": 1.5,
         "c2": 1.5
     },
     {
-        "name": "PSO_swarm20_w050_c115_c215",
+        "name": "PSO_RAW_swarm20_w050_c115_c215",
         "swarm_size": 20,
         "w": 0.50,
         "c1": 1.5,
         "c2": 1.5
     },
     {
-        "name": "PSO_swarm20_w090_c115_c215",
+        "name": "PSO_RAW_swarm20_w090_c115_c215",
         "swarm_size": 20,
         "w": 0.90,
         "c1": 1.5,
         "c2": 1.5
     },
     {
-        "name": "PSO_swarm50_w070_c115_c215",
+        "name": "PSO_RAW_swarm50_w070_c115_c215",
         "swarm_size": 50,
         "w": 0.70,
         "c1": 1.5,
         "c2": 1.5
     },
     {
-        "name": "PSO_swarm50_w050_c115_c215",
+        "name": "PSO_RAW_swarm50_w050_c115_c215",
         "swarm_size": 50,
         "w": 0.50,
         "c1": 1.5,
         "c2": 1.5
     },
     {
-        "name": "PSO_swarm50_w090_c115_c215",
+        "name": "PSO_RAW_swarm50_w090_c115_c215",
         "swarm_size": 50,
         "w": 0.90,
         "c1": 1.5,
@@ -100,10 +102,10 @@ PSO_CONFIGS = [
     }
 ]
 
-#get the train pca dataset
-train_df = pd.read_csv(f"{DATA_DIR}/train_pca_multiclass.csv")
-#get the test pca dataset
-test_df = pd.read_csv(f"{DATA_DIR}/test_pca_multiclass.csv")
+#get the train raw dataset
+train_df = pd.read_csv(f"{DATA_DIR}/train_multiclass.csv")
+#get the test raw dataset
+test_df = pd.read_csv(f"{DATA_DIR}/test_multiclass.csv")
 
 #remove the label column for the machine learning
 X_train_full = train_df.drop(columns=[TARGET_COLUMN]).values
@@ -115,7 +117,7 @@ X_test = test_df.drop(columns=[TARGET_COLUMN]).values
 #same as train data here
 y_test = test_df[TARGET_COLUMN].values
 
-#split the original training set into inner-train and validation for PSO search only
+#(split the original training set into inner-train and validation for PSO search only)
 X_train, X_val, y_train, y_val = train_test_split(
     X_train_full,
     y_train_full,
@@ -129,7 +131,7 @@ X_train, X_val, y_train, y_val = train_test_split(
 num_features = X_train_full.shape[1]
 
 
-#sanity check to avoid hidden train-test overlap problems
+#(sanity check to avoid hidden train-test overlap problems)
 def exact_overlap_count(X_a, y_a, X_b, y_b):
     #combine features and labels together so overlap check is strict
     a = np.column_stack([X_a, y_a])
@@ -141,6 +143,39 @@ def exact_overlap_count(X_a, y_a, X_b, y_b):
 
     return len(set_a.intersection(set_b))
 
+
+#(check overlap once before running PSO so no accidental leakage slips in)
+overlap_count = exact_overlap_count(X_train_full, y_train_full, X_test, y_test)
+print("\n===== DATA SANITY CHECK =====")
+print("Exact Train-Test Overlap Count :", overlap_count)
+
+overlap_removed = 0
+
+if overlap_count != 0:
+    print(f"\n[WARNING] Found {overlap_count} overlapping rows between train and test.")
+
+    #combine features and labels together so overlap check is strict
+    a = np.column_stack([X_train_full, y_train_full])
+    b = np.column_stack([X_test, y_test])
+
+    #convert each row into bytes for exact set comparison
+    set_a = {row.tobytes() for row in a}
+
+    #create mask to keep only non-overlapping rows in test set
+    mask = np.array([row.tobytes() not in set_a for row in b])
+
+    original_test_size = len(X_test)
+
+    X_test = X_test[mask]
+    y_test = y_test[mask]
+
+    new_test_size = len(X_test)
+    overlap_removed = original_test_size - new_test_size
+
+    print(f"[INFO] Removed {overlap_removed} overlapping rows from TEST set")
+    print(f"[INFO] Test set size: {original_test_size} -> {new_test_size}")
+
+
 #define sigmoid function for binary PSO transfer
 def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-x))
@@ -151,7 +186,7 @@ def initialize_swarm(swarm_size, rng):
     #binary positions meaning whether feature is selected or not
     positions = rng.integers(0, 2, size=(swarm_size, num_features))
 
-    #prevent empty particle at initialization
+    #(prevent empty particle at initialization)
     for i in range(swarm_size):
         if np.sum(positions[i]) == 0:
             random_idx = rng.integers(0, num_features)
@@ -165,7 +200,7 @@ def initialize_swarm(swarm_size, rng):
 
 #define the fitness function where one particle means one feature subset
 #uses Random Forest as the base model (consistent with baseline)
-#fitness must use validation set instead of test set to avoid data leakage
+#(fitness must use validation set instead of test set to avoid data leakage)
 def fitness(individual):
     #prevent edge cases where no features are selected
     if np.sum(individual) == 0:
@@ -204,16 +239,16 @@ def run_pso_config(config, config_index):
     social_weight = config["c2"]
     config_name = config["name"]
 
-    #use config-specific rng so results are reproducible and independent
+    #(use config-specific rng so results are reproducible and independent)
     rng = np.random.default_rng(GLOBAL_SEED + config_index)
 
-    #each config gets its own wandb run so curves can be compared directly
+    #(each config gets its own wandb run so curves can be compared directly)
     run_name = f"{config_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     run = init_wandb(
-        project="cicids-pso",
+        project="cicids-pso-raw",
         name=run_name,
-        group="pso_hyperparameter_search",
-        tags=["PSO", "validation_search"],
+        group="pso_raw_hyperparameter_search",
+        tags=["PSO", "validation_search", "raw_data"],
         config={
             "algorithm": "PSO",
             "swarm_size": swarm_size,
@@ -222,7 +257,7 @@ def run_pso_config(config, config_index):
             "cognitive_weight": cognitive_weight,
             "social_weight": social_weight,
             "features": num_features,
-            "dataset": "CICIDS2017 PCA",
+            "dataset": "CICIDS2017 Raw",
             "base_model": "RandomForest",
             "validation_split_inside_train": VAL_SIZE,
             "evaluation_protocol": "PSO search on validation, final test only once",
@@ -266,7 +301,7 @@ def run_pso_config(config, config_index):
                 + social_weight * r2 * (global_best_position - positions[i])
             )
 
-            #clip velocity to avoid exploding movement
+            #(clip velocity to avoid exploding movement)
             velocities[i] = np.clip(velocities[i], -6, 6)
 
             #binary PSO position update using sigmoid transfer
@@ -274,7 +309,7 @@ def run_pso_config(config, config_index):
             random_draw = rng.random(num_features)
             positions[i] = (random_draw < probabilities).astype(int)
 
-            #prevent empty particle after update
+            #(prevent empty particle after update)
             if np.sum(positions[i]) == 0:
                 random_idx = rng.integers(0, num_features)
                 positions[i, random_idx] = 1
@@ -315,7 +350,7 @@ def run_pso_config(config, config_index):
     #taking the best subset found by this config
     selected_features = np.where(global_best_position == 1)[0]
 
-    #retrain on the full original training set after PSO search is complete
+    #(retrain on the full original training set after PSO search is complete)
     X_tr_final = X_train_full[:, selected_features]
     X_te_final = X_test[:, selected_features]
 
@@ -334,7 +369,7 @@ def run_pso_config(config, config_index):
     y_pred = final_model.predict(X_te_final)
     test_time = time.time() - start_test
 
-    #also check train prediction to discuss overfitting more rigorously
+    #(also check train prediction to discuss overfitting more rigorously)
     y_train_pred = final_model.predict(X_tr_final)
 
     #finally compute the metrices that are needed
@@ -344,7 +379,7 @@ def run_pso_config(config, config_index):
     f1 = f1_score(y_test, y_pred, average="macro", zero_division=0)
     bal_acc = balanced_accuracy_score(y_test, y_pred)
 
-    #train metrics for overfitting check
+    #(train metrics for overfitting check)
     train_acc = accuracy_score(y_train_full, y_train_pred)
     train_prec = precision_score(y_train_full, y_train_pred, average="macro", zero_division=0)
     train_rec = recall_score(y_train_full, y_train_pred, average="macro", zero_division=0)
@@ -388,7 +423,7 @@ def run_pso_config(config, config_index):
     print("F1 Gap (macro)        :", train_f1 - f1)
     print("Balanced Accuracy Gap :", train_bal_acc - bal_acc)
 
-    #log final metrics of this config so each config run is self-contained
+    #(log final metrics of this config so each config run is self-contained)
     run.log({
         "overlap_count_detected": overlap_count,
         "overlap_removed_from_test": overlap_removed,
@@ -413,7 +448,7 @@ def run_pso_config(config, config_index):
         "total_search_time": total_search_time
     })
 
-    #log confusion matrix if wandb available
+    #(log confusion matrix if wandb available)
     if WANDB_AVAILABLE:
         import wandb
         run.log({
@@ -455,7 +490,7 @@ def run_pso_config(config, config_index):
     }
 
 
-#run all configs and choose the best one by validation score only
+#(run all configs and choose the best one by validation score only)
 all_results = []
 
 print("\n===== START PSO HYPERPARAMETER SEARCH =====")
@@ -469,7 +504,7 @@ for idx, config in enumerate(PSO_CONFIGS, start=1):
     result = run_pso_config(config, idx)
     all_results.append(result)
 
-#choose best config only by validation performance
+#(choose best config only by validation performance)
 best_result = max(all_results, key=lambda x: x["best_validation_f1"])
 
 print("\n===== ALL CONFIG RESULTS (VALIDATION USED FOR SELECTION) =====")

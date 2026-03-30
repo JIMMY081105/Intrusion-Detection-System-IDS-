@@ -1,6 +1,7 @@
-#the core of simulated annealing is to start from one candidate solution
-#and then randomly explore neighbour solutions with controlled acceptance
-#through iterations and temperature cooling until a better subset is found
+#the core of genetic algorithm is to select amount of initial cadidates
+#evaluates and apply fitness function to each candidate to be the parent
+#through iterations crossover and mutation until a local optima is found
+#(high score version: one wandb run per config, validation for search, test only once, safe overlap handling)
 
 #allow gpu run - graceful fallback if cuML not available
 from env_setup import GPU_AVAILABLE, WANDB_AVAILABLE, DATA_DIR, TARGET_COLUMN, init_wandb
@@ -11,7 +12,8 @@ import pandas as pd
 #get numpy for array and matrix operations
 import numpy as np
 
-#get random for reproducibility
+#python to generate random values which is used for
+#1. random selection 2.crossover 3.mutation
 import random
 
 #get time to record the running time
@@ -39,59 +41,32 @@ from sklearn.metrics import (
     classification_report,
 )
 
-#(split train into train_inner and val_inner so SA search never touches the test set)
+#(split train into train_inner and val_inner so GA search never touches the test set)
 from sklearn.model_selection import train_test_split
 
 
-#global seed for reproducibility
+#(global seed for reproducibility)
 GLOBAL_SEED = 42
 random.seed(GLOBAL_SEED)
 np.random.seed(GLOBAL_SEED)
 
-#define number of iterations
-ITERATIONS = 15
-
-#validation split ratio used only inside training data for SA fitness
+#define number of evolutions that will happen
+GENERATIONS = 15
+#probs of combining 2 parents
+CROSSOVER_RATE = 0.8
+#tournament size indicates amount of gene compete during selection
+TOURNAMENT_SIZE = 3
+#(validation split ratio used only inside training data for GA fitness)
 VAL_SIZE = 0.20
 
-#hyperparameter study for SA
-SA_CONFIGS = [
-    {
-        "name": "SA_temp20_cool095_flip1",
-        "initial_temp": 2.0,
-        "cooling_rate": 0.95,
-        "flip_bits": 1
-    },
-    {
-        "name": "SA_temp20_cool090_flip1",
-        "initial_temp": 2.0,
-        "cooling_rate": 0.90,
-        "flip_bits": 1
-    },
-    {
-        "name": "SA_temp20_cool095_flip2",
-        "initial_temp": 2.0,
-        "cooling_rate": 0.95,
-        "flip_bits": 2
-    },
-    {
-        "name": "SA_temp50_cool095_flip1",
-        "initial_temp": 5.0,
-        "cooling_rate": 0.95,
-        "flip_bits": 1
-    },
-    {
-        "name": "SA_temp50_cool090_flip1",
-        "initial_temp": 5.0,
-        "cooling_rate": 0.90,
-        "flip_bits": 1
-    },
-    {
-        "name": "SA_temp50_cool095_flip2",
-        "initial_temp": 5.0,
-        "cooling_rate": 0.95,
-        "flip_bits": 2
-    }
+#(hyperparameter study for GA)
+GA_CONFIGS = [
+    {"name": "GA_pop20_mut005", "population_size": 20, "mutation_rate": 0.05},
+    {"name": "GA_pop20_mut010", "population_size": 20, "mutation_rate": 0.10},
+    {"name": "GA_pop20_mut020", "population_size": 20, "mutation_rate": 0.20},
+    {"name": "GA_pop50_mut005", "population_size": 50, "mutation_rate": 0.05},
+    {"name": "GA_pop50_mut010", "population_size": 50, "mutation_rate": 0.10},
+    {"name": "GA_pop50_mut020", "population_size": 50, "mutation_rate": 0.20},
 ]
 
 #get the train pca dataset
@@ -109,7 +84,7 @@ X_test = test_df.drop(columns=[TARGET_COLUMN]).values
 #same as train data here
 y_test = test_df[TARGET_COLUMN].values
 
-#split the original training set into inner-train and validation for SA search only
+#(split the original training set into inner-train and validation for GA search only)
 X_train, X_val, y_train, y_val = train_test_split(
     X_train_full,
     y_train_full,
@@ -118,12 +93,12 @@ X_train, X_val, y_train, y_val = train_test_split(
     stratify=y_train_full
 )
 
-#define number of features as the num of column in train dataset
+#define number of features as the num of column in train datase
 #where the target as already being removed
 num_features = X_train_full.shape[1]
 
 
-#sanity check to avoid hidden train-test overlap problems
+#(sanity check to avoid hidden train-test overlap problems)
 def exact_overlap_count(X_a, y_a, X_b, y_b):
     #combine features and labels together so overlap check is strict
     a = np.column_stack([X_a, y_a])
@@ -136,7 +111,7 @@ def exact_overlap_count(X_a, y_a, X_b, y_b):
     return len(set_a.intersection(set_b))
 
 
-#check overlap once before running SA so no accidental leakage slips in
+#(check overlap once before running GA so no accidental leakage slips in)
 overlap_count = exact_overlap_count(X_train_full, y_train_full, X_test, y_test)
 print("\n===== DATA SANITY CHECK =====")
 print("Exact Train-Test Overlap Count :", overlap_count)
@@ -168,9 +143,24 @@ if overlap_count != 0:
     print(f"[INFO] Test set size: {original_test_size} -> {new_test_size}")
 
 
-#define the fitness function where one solution means one feature subset
+#first step of GA which is initialization of population
+def initialize_population(pop_size, rng):
+    #here ensures binary generation from 0<= x <2, only 0 or 1
+    #random ensures the GA with random spot scattered
+    population = rng.integers(0, 2, (pop_size, num_features))
+
+    #(prevent empty individual at initialization)
+    for i in range(pop_size):
+        if np.sum(population[i]) == 0:
+            random_idx = rng.integers(0, num_features)
+            population[i, random_idx] = 1
+
+    return population
+
+
+#define the fitness function where individual / one solution
 #uses Random Forest as the base model (consistent with baseline)
-#fitness must use validation set instead of test set to avoid data leakage
+#(fitness must use validation set instead of test set to avoid data leakage)
 def fitness(individual):
     #prevent edge cases where no features are selected
     if np.sum(individual) == 0:
@@ -201,139 +191,159 @@ def fitness(individual):
     return f1_score(y_val, y_pred, average="macro", zero_division=0)
 
 
-#initialize one starting solution
-def initialize_solution(rng):
-    #random binary feature mask
-    solution = rng.integers(0, 2, size=num_features)
-
-    #prevent empty solution at initialization
-    if np.sum(solution) == 0:
-        random_idx = rng.integers(0, num_features)
-        solution[random_idx] = 1
-
-    return solution
-
-
-#define neighbour generation
-def generate_neighbour(solution, flip_bits, rng):
-    #copy the current solution first
-    neighbour = solution.copy()
-
-    #flip one or more random feature bits
-    flip_indices = rng.choice(num_features, size=flip_bits, replace=False)
-    for idx in flip_indices:
-        neighbour[idx] = 1 - neighbour[idx]
-
-    #prevent empty neighbour
-    if np.sum(neighbour) == 0:
-        random_idx = rng.integers(0, num_features)
-        neighbour[random_idx] = 1
-
-    return neighbour
+#define the tournament selection / selecting parents here
+def tournament_selection(population, fitness_scores, pop_size, rng):
+    #store the selected feature
+    selected = []
+    #you want to loop until new population is full
+    for _ in range(pop_size):
+        #pick random individuals as candidates dependent on tournament size
+        candidates = rng.choice(pop_size, size=TOURNAMENT_SIZE, replace=False)
+        #pick the best candidate with highest fitness
+        best = max(candidates, key=lambda idx: fitness_scores[idx])
+        #now the best are selected for the next generation
+        selected.append(population[best].copy())
+    return np.array(selected)
 
 
-#define one full SA search for one config
-def run_sa_config(config, config_index):
-    initial_temp = config["initial_temp"]
-    cooling_rate = config["cooling_rate"]
-    flip_bits = config["flip_bits"]
+#define crossover function between 2 parents
+def crossover(parent1, parent2, pop_rng):
+    #only perform crossover with some probability
+    if pop_rng.random() < CROSSOVER_RATE:
+        #choose the crossover point
+        point = pop_rng.integers(1, num_features)
+        #swapping the 2 parts of parents
+        child1 = np.concatenate([parent1[:point], parent2[point:]])
+        child2 = np.concatenate([parent2[:point], parent1[point:]])
+        return child1, child2
+    return parent1.copy(), parent2.copy()
+
+
+#define mutation
+def mutate(individual, mutation_rate, pop_rng):
+    #in each features depend on mutation rate to change
+    for i in range(num_features):
+        if pop_rng.random() < mutation_rate:
+            individual[i] = 1 - individual[i]
+
+    #(prevent mutation from creating empty individual)
+    if np.sum(individual) == 0:
+        random_idx = pop_rng.integers(0, num_features)
+        individual[random_idx] = 1
+
+    return individual
+
+
+#(run one full GA search for one config and return the best result)
+def run_ga_config(config, config_index):
+    pop_size = config["population_size"]
+    mutation_rate = config["mutation_rate"]
     config_name = config["name"]
 
-    #use config-specific rng so results are reproducible and independent
+    #(use config-specific rng so results are reproducible and independent)
     rng = np.random.default_rng(GLOBAL_SEED + config_index)
 
-    #each config gets its own wandb run so curves can be compared directly
+    #(each config gets its own wandb run so curves can be compared directly)
     run_name = f"{config_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     run = init_wandb(
-        project="cicids-sa",
+        project="cicids-ga",
         name=run_name,
-        group="sa_hyperparameter_search",
-        tags=["SA", "validation_search"],
+        group="ga_hyperparameter_search",
+        tags=["GA", "validation_search"],
         config={
-            "algorithm": "SA",
-            "iterations": ITERATIONS,
-            "initial_temp": initial_temp,
-            "cooling_rate": cooling_rate,
-            "flip_bits": flip_bits,
+            "algorithm": "GA",
+            "population_size": pop_size,
+            "mutation_rate": mutation_rate,
+            "generations": GENERATIONS,
+            "crossover_rate": CROSSOVER_RATE,
+            "tournament_size": TOURNAMENT_SIZE,
             "features": num_features,
             "dataset": "CICIDS2017 PCA",
             "base_model": "RandomForest",
             "validation_split_inside_train": VAL_SIZE,
-            "evaluation_protocol": "SA search on validation, final test only once",
+            "evaluation_protocol": "GA search on validation, final test only once",
             "global_seed": GLOBAL_SEED
         }
     )
 
-    #initialize current solution
-    current_solution = initialize_solution(rng)
-    current_score = fitness(current_solution)
+    #FULL GA EVOLUTION
+    population = initialize_population(pop_size, rng)
 
-    #store the best solution found so far
-    best_solution = current_solution.copy()
-    best_score = current_score
-    best_iteration = 0
+    #track best solution so far
+    best_individual = None
+    best_fitness = -1
+    best_generation = -1
 
-    #initial temperature
-    temperature = initial_temp
+    config_start_total = time.time()
 
-    #track total search time
-    start_total = time.time()
-
-    #start the iterations
-    for iteration in range(ITERATIONS):
+    #start the evolution
+    for gen in range(GENERATIONS):
         #measure time from here
-        start_iter = time.time()
+        start_gen = time.time()
 
-        #generate one neighbouring solution
-        neighbour = generate_neighbour(current_solution, flip_bits, rng)
-        neighbour_score = fitness(neighbour)
+        #evaluate all individuals
+        fitness_scores = np.array([fitness(ind) for ind in population])
 
-        #difference in score
-        delta = neighbour_score - current_score
+        #the best in generations
+        gen_best_idx = np.argmax(fitness_scores)
+        gen_best_fitness = fitness_scores[gen_best_idx]
 
-        #accept if better or with probability if worse
-        if delta >= 0:
-            current_solution = neighbour.copy()
-            current_score = neighbour_score
-        else:
-            acceptance_probability = np.exp(delta / temperature) if temperature > 1e-12 else 0
-            if rng.random() < acceptance_probability:
-                current_solution = neighbour.copy()
-                current_score = neighbour_score
+        #update the global best here
+        if gen_best_fitness > best_fitness:
+            best_fitness = gen_best_fitness
+            best_individual = population[gen_best_idx].copy()
+            best_generation = gen + 1
 
-        #update best solution if better
-        if current_score > best_score:
-            best_score = current_score
-            best_solution = current_solution.copy()
-            best_iteration = iteration + 1
-
-        #cool down the temperature
-        temperature = temperature * cooling_rate
-
-        #get iteration time
-        iter_time = time.time() - start_iter
-
-        #print progress here
+        #print out the progress
+        gen_time = time.time() - start_gen
         print(
-            f"[{config_name}] Iteration {iteration+1}/{ITERATIONS} "
-            f"- Best Val F1: {best_score:.6f} - Time: {iter_time:.2f}s"
+            f"[{config_name}] Generation {gen+1}/{GENERATIONS} "
+            f"- Best Val F1: {gen_best_fitness:.6f} - Time: {gen_time:.2f}s"
         )
 
-        #let wandb track the best and current performance
+        #let wandb track the best and average performance
         run.log({
-            "iteration": iteration + 1,
-            "best_val_f1": best_score,
-            "current_val_f1": current_score,
-            "temperature": temperature,
-            "iter_time": iter_time
+            "generation": gen + 1,
+            "best_val_f1": gen_best_fitness,
+            "avg_val_f1": float(np.mean(fitness_scores)),
+            "gen_time": gen_time
         })
 
-    total_search_time = time.time() - start_total
+        #choose parents here
+        selected_population = tournament_selection(population, fitness_scores, pop_size, rng)
+        #prepare next generation
+        next_population = []
 
-    #taking the best subset found by this config
-    selected_features = np.where(best_solution == 1)[0]
+        #(elitism: keep the best solution so it is not lost in the next generation)
+        next_population.append(best_individual.copy())
 
-    #retrain on the full original training set after SA search is complete
+        #loop again
+        while len(next_population) < pop_size:
+            #select parent
+            parent1 = selected_population[rng.integers(0, pop_size)]
+            parent2 = selected_population[rng.integers(0, pop_size)]
+
+            #crossover here
+            child1, child2 = crossover(parent1, parent2, rng)
+
+            #mutate here -add randomness
+            child1 = mutate(child1, mutation_rate, rng)
+            child2 = mutate(child2, mutation_rate, rng)
+
+            #add to the next generation
+            next_population.append(child1)
+            if len(next_population) < pop_size:
+                next_population.append(child2)
+
+        #replace the population
+        population = np.array(next_population)
+
+    total_search_time = time.time() - config_start_total
+
+    #taking the best solution and train the model
+    selected_features = np.where(best_individual == 1)[0]
+
+    #(retrain on the full original training set after GA search is complete)
     X_tr_final = X_train_full[:, selected_features]
     X_te_final = X_test[:, selected_features]
 
@@ -352,7 +362,7 @@ def run_sa_config(config, config_index):
     y_pred = final_model.predict(X_te_final)
     test_time = time.time() - start_test
 
-    #also check train prediction to discuss overfitting more rigorously
+    #(also check train prediction to discuss overfitting more rigorously)
     y_train_pred = final_model.predict(X_tr_final)
 
     #finally compute the metrices that are needed
@@ -362,7 +372,7 @@ def run_sa_config(config, config_index):
     f1 = f1_score(y_test, y_pred, average="macro", zero_division=0)
     bal_acc = balanced_accuracy_score(y_test, y_pred)
 
-    #train metrics for overfitting check
+    #(train metrics for overfitting check)
     train_acc = accuracy_score(y_train_full, y_train_pred)
     train_prec = precision_score(y_train_full, y_train_pred, average="macro", zero_division=0)
     train_rec = recall_score(y_train_full, y_train_pred, average="macro", zero_division=0)
@@ -380,7 +390,7 @@ def run_sa_config(config, config_index):
     print(f"\n===== [{config_name}] FINAL RESULTS =====")
     print("Selected Features            :", selected_features)
     print("Number of Selected Features  :", len(selected_features))
-    print("Best Validation F1           :", best_score)
+    print("Best Validation F1           :", best_fitness)
 
     print("\n----- TRAIN METRICS -----")
     print("Train Accuracy          :", train_acc)
@@ -406,13 +416,13 @@ def run_sa_config(config, config_index):
     print("F1 Gap (macro)        :", train_f1 - f1)
     print("Balanced Accuracy Gap :", train_bal_acc - bal_acc)
 
-    #log final metrics of this config so each config run is self-contained
+    #(log final metrics of this config so each config run is self-contained)
     run.log({
         "overlap_count_detected": overlap_count,
         "overlap_removed_from_test": overlap_removed,
 
-        "best_validation_f1": best_score,
-        "best_iteration": best_iteration,
+        "best_validation_f1": best_fitness,
+        "best_generation": best_generation,
         "num_selected_features": len(selected_features),
 
         "train_accuracy": train_acc,
@@ -432,7 +442,7 @@ def run_sa_config(config, config_index):
         "total_search_time": total_search_time
     })
 
-    #log confusion matrix if wandb available
+    #(log confusion matrix if wandb available)
     if WANDB_AVAILABLE:
         import wandb
         run.log({
@@ -447,11 +457,10 @@ def run_sa_config(config, config_index):
 
     return {
         "config_name": config_name,
-        "initial_temp": initial_temp,
-        "cooling_rate": cooling_rate,
-        "flip_bits": flip_bits,
-        "best_validation_f1": best_score,
-        "best_iteration": best_iteration,
+        "population_size": pop_size,
+        "mutation_rate": mutation_rate,
+        "best_validation_f1": best_fitness,
+        "best_generation": best_generation,
         "selected_features": selected_features,
         "num_selected_features": len(selected_features),
         "search_time": total_search_time,
@@ -474,28 +483,28 @@ def run_sa_config(config, config_index):
     }
 
 
-#run all configs and choose the best one by validation score only
+#(run all configs and choose the best one by validation score only)
 all_results = []
 
-print("\n===== START SA HYPERPARAMETER SEARCH =====")
-for idx, config in enumerate(SA_CONFIGS, start=1):
+print("\n===== START GA HYPERPARAMETER SEARCH =====")
+for idx, config in enumerate(GA_CONFIGS, start=1):
     print(
-        f"\n===== RUNNING CONFIG {idx}/{len(SA_CONFIGS)} : "
+        f"\n===== RUNNING CONFIG {idx}/{len(GA_CONFIGS)} : "
         f"{config['name']} "
-        f"(temp={config['initial_temp']}, cool={config['cooling_rate']}, flip={config['flip_bits']}) ====="
+        f"(pop={config['population_size']}, mut={config['mutation_rate']}) ====="
     )
 
-    result = run_sa_config(config, idx)
+    result = run_ga_config(config, idx)
     all_results.append(result)
 
-#choose best config only by validation performance
+#(choose best config only by validation performance)
 best_result = max(all_results, key=lambda x: x["best_validation_f1"])
 
 print("\n===== ALL CONFIG RESULTS (VALIDATION USED FOR SELECTION) =====")
 for result in all_results:
     print(
-        f"{result['config_name']} | temp={result['initial_temp']} | "
-        f"cool={result['cooling_rate']} | flip={result['flip_bits']} | "
+        f"{result['config_name']} | pop={result['population_size']} | "
+        f"mut={result['mutation_rate']} | "
         f"val_f1={result['best_validation_f1']:.6f} | "
         f"features={result['num_selected_features']} | "
         f"search_time={result['search_time']:.2f}s"
@@ -503,10 +512,10 @@ for result in all_results:
 
 print("\n===== BEST CONFIG SELECTED =====")
 print("Best Config Name            :", best_result["config_name"])
-print("Best Initial Temperature    :", best_result["initial_temp"])
-print("Best Cooling Rate           :", best_result["cooling_rate"])
-print("Best Flip Bits              :", best_result["flip_bits"])
+print("Best Population Size        :", best_result["population_size"])
+print("Best Mutation Rate          :", best_result["mutation_rate"])
 print("Best Validation F1          :", best_result["best_validation_f1"])
+print("Best Generation             :", best_result["best_generation"])
 print("Selected Features           :", best_result["selected_features"])
 print("Number of Selected Features :", best_result["num_selected_features"])
 

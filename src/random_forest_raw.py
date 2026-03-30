@@ -35,10 +35,10 @@ from sklearn.metrics import (
 import time
 
 
-#get the train pca dataset
-train_df = pd.read_csv(f"{DATA_DIR}/train_pca_multiclass.csv")
-#get the test pca dataset
-test_df = pd.read_csv(f"{DATA_DIR}/test_pca_multiclass.csv")
+#get the train raw dataset
+train_df = pd.read_csv(f"{DATA_DIR}/train_multiclass.csv")
+#get the test raw dataset
+test_df = pd.read_csv(f"{DATA_DIR}/test_multiclass.csv")
 
 #remove the label column leaving the rest
 X_train = train_df.drop(columns=[TARGET_COLUMN]).values
@@ -98,12 +98,12 @@ if overlap_count != 0:
 #initialize wandb run
 run = init_wandb(
     project="cicids-random-forest",
-    name="rf_pca_baseline",
+    name="rf_raw_baseline",
     config={
         "model": "RandomForest",
         "n_estimators": 100,
         "features": X_train.shape[1],
-        "dataset": "CICIDS2017 PCA",
+        "dataset": "CICIDS2017 Raw",
         "evaluation_protocol": "train on full train, test once, overlap-safe handling on test if needed",
     }
 )
@@ -154,7 +154,7 @@ train_recall = recall_score(y_train, y_train_pred, average="macro", zero_divisio
 #f1 is used to balance between precision and recall
 train_f1 = f1_score(y_train, y_train_pred, average="macro", zero_division=0)
 
-#balanced accuracy is useful for imbalanced multiclass dataset
+#(balanced accuracy is useful for imbalanced multiclass dataset)
 train_balanced_accuracy = balanced_accuracy_score(y_train, y_train_pred)
 
 #get it by accuracy = correct_predictions / total_predictions

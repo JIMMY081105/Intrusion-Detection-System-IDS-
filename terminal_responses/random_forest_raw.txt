@@ -1,0 +1,165 @@
+root@5c2ea0d82de6:/workspace/my_project/machine_learning/src# CUDA_VISIBLE_DEVICES=1 python random_forest_raw.py
+[env_setup] GPU (cuML): enabled
+[env_setup] CUDA_VISIBLE_DEVICES: 1
+[env_setup] wandb:      enabled
+
+===== DATA SANITY CHECK =====
+Exact Train-Test Overlap Count : 0
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /root/.netrc.
+wandb: Currently logged in as: hfyym4 (hfyym4-university-of-nottingham) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.25.1
+wandb: Run data is saved locally in /workspace/my_project/machine_learning/src/wandb/run-20260330_165856-17urljcj
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run rf_raw_baseline
+wandb: ⭐️ View project at https://wandb.ai/hfyym4-university-of-nottingham/cicids-random-forest
+wandb: 🚀 View run at https://wandb.ai/hfyym4-university-of-nottingham/cicids-random-forest/runs/17urljcj
+
+Per-class metrics from confusion matrix:
+
+Class 0:
+TP=372602, FP=637, FN=105, TN=66664
+FPR=0.009465, TPR(Recall)=0.999718
+
+Class 1:
+TP=155, FP=0, FN=133, TN=439720
+FPR=0.000000, TPR(Recall)=0.538194
+
+Class 2:
+TP=25566, FP=10, FN=37, TN=414395
+FPR=0.000024, TPR(Recall)=0.998555
+
+Class 3:
+TP=2025, FP=3, FN=32, TN=437948
+FPR=0.000007, TPR(Recall)=0.984443
+
+Class 4:
+TP=34269, FP=21, FN=301, TN=405417
+FPR=0.000052, TPR(Recall)=0.991293
+
+Class 5:
+TP=1032, FP=59, FN=14, TN=438903
+FPR=0.000134, TPR(Recall)=0.986616
+
+Class 6:
+TP=1063, FP=6, FN=14, TN=438925
+FPR=0.000014, TPR(Recall)=0.987001
+
+Class 7:
+TP=1183, FP=3, FN=4, TN=438818
+FPR=0.000007, TPR(Recall)=0.996630
+
+Class 8:
+TP=2, FP=0, FN=0, TN=440006
+FPR=0.000000, TPR(Recall)=1.000000
+
+Class 9:
+TP=4, FP=0, FN=3, TN=440001
+FPR=0.000000, TPR(Recall)=0.571429
+
+Class 10:
+TP=379, FP=25, FN=13, TN=439591
+FPR=0.000057, TPR(Recall)=0.966837
+
+Class 11:
+TP=598, FP=0, FN=46, TN=439364
+FPR=0.000000, TPR(Recall)=0.928571
+
+Class 12:
+TP=240, FP=126, FN=54, TN=439588
+FPR=0.000287, TPR(Recall)=0.816327
+
+Class 13:
+TP=0, FP=0, FN=4, TN=440004
+FPR=0.000000, TPR(Recall)=0.000000
+
+Class 14:
+TP=0, FP=0, FN=130, TN=439878
+FPR=0.000000, TPR(Recall)=0.000000
+
+===== TRAIN RESULTS =====
+Train Accuracy : 0.9981341237739563
+Train Precision: 0.9712211734527488
+Train Recall   : 0.8084267842665521
+Train F1 Score : 0.8253900950162965
+Train Balanced Accuracy : 0.8084267842665521
+Train Predict Time: 1.0294182300567627
+
+===== TEST RESULTS =====
+Accuracy : 0.9979773095034635
+Precision: 0.8351630713812707
+Recall   : 0.7843742669381394
+F1 Score : 0.800530486300716
+Balanced Accuracy : 0.7843742669381394
+Train Time : 8.189664125442505
+Predict Time: 0.23190832138061523
+Total time: 8.42157244682312
+Number of Features: 77
+
+===== OVERLAP HANDLING =====
+Overlap Count Detected : 0
+Overlap Removed From Test : 0
+Final Test Size : 440008
+
+Classification Report:
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    372707
+           1       1.00      0.54      0.70       288
+           2       1.00      1.00      1.00     25603
+           3       1.00      0.98      0.99      2057
+           4       1.00      0.99      1.00     34570
+           5       0.95      0.99      0.97      1046
+           6       0.99      0.99      0.99      1077
+           7       1.00      1.00      1.00      1187
+           8       1.00      1.00      1.00         2
+           9       1.00      0.57      0.73         7
+          10       0.94      0.97      0.95       392
+          11       1.00      0.93      0.96       644
+          12       0.66      0.82      0.73       294
+          13       0.00      0.00      0.00         4
+          14       0.00      0.00      0.00       130
+
+    accuracy                           1.00    440008
+   macro avg       0.84      0.78      0.80    440008
+weighted avg       1.00      1.00      1.00    440008
+
+
+===== TRAIN-TEST GAP =====
+Accuracy Gap : 0.00015681427049274443
+Precision Gap: 0.13605810207147817
+Recall Gap   : 0.024052517328412737
+F1 Gap       : 0.02485960871558046
+Balanced Acc Gap : 0.024052517328412737
+wandb: 
+wandb: Run history:
+wandb:                  accuracy ▁
+wandb:         balanced_accuracy ▁
+wandb:                  f1_score ▁
+wandb:           final_test_size ▁
+wandb:              num_features ▁
+wandb:    overlap_count_detected ▁
+wandb: overlap_removed_from_test ▁
+wandb:                 precision ▁
+wandb:              predict_time ▁
+wandb:                    recall ▁
+wandb:                        +8 ...
+wandb: 
+wandb: Run summary:
+wandb:                  accuracy 0.99798
+wandb:         balanced_accuracy 0.78437
+wandb:                  f1_score 0.80053
+wandb:           final_test_size 440008
+wandb:              num_features 77
+wandb:    overlap_count_detected 0
+wandb: overlap_removed_from_test 0
+wandb:                 precision 0.83516
+wandb:              predict_time 0.23191
+wandb:                    recall 0.78437
+wandb:                        +8 ...
+wandb: 
+wandb: 🚀 View run rf_raw_baseline at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-random-forest/runs/17urljcj
+wandb: ⭐️ View project at: https://wandb.ai/hfyym4-university-of-nottingham/cicids-random-forest
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20260330_165856-17urljcj/logs
+root@5c2ea0d82de6:/workspace/my_project/machine_learning/src# 

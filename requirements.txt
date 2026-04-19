@@ -1,0 +1,15 @@
+# Core ML and data science dependencies
+pandas>=1.5.0
+numpy>=1.23.0
+scikit-learn>=1.1.0
+scipy>=1.9.0
+
+# Experiment tracking (optional — scripts run without it)
+wandb>=0.13.0
+
+# GPU acceleration via RAPIDS cuML (optional — CPU fallback is automatic)
+# Install the version matching your CUDA toolkit:
+#   pip install cuml-cu13   (CUDA 13.x)
+#   pip install cuml-cu12   (CUDA 12.x)
+#   pip install cuml-cu11   (CUDA 11.x)
+# See https://docs.rapids.ai/install for details.

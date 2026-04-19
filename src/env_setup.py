@@ -1,34 +1,29 @@
-#this file is used to setup the environment for all scripts
-#it checks whether gpu and wandb are available
-#it also stores shared dataset path and target column
-#make single-gpu runs explicit and reproducible
+# File:    env_setup.py
+# Purpose: Shared environment configuration imported by all model scripts.
+#          Detects GPU (cuML) and W&B availability, exposes dataset paths,
+#          and provides a unified wandb init helper with a no-op fallback.
 
-#import os for environment variables and path handling
 import os
 
-#basic dataset settings shared by all models
+# Resolved path to the processed dataset directory, relative to the project root.
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "processed")
 TARGET_COLUMN = "Target"
 
-#global flags
 GPU_AVAILABLE = False
 WANDB_AVAILABLE = False
 
 
-#define gpu initialization
 def init_gpu():
     global GPU_AVAILABLE
 
     try:
-        #install cuml acceleration hook for sklearn-compatible gpu acceleration
+        # cuml.accel patches sklearn transparently — no code changes needed in model scripts.
         import cuml.accel
         cuml.accel.install()
 
         GPU_AVAILABLE = True
 
-        #(show which gpu this process can see for reproducibility and auditability)
         visible_devices = os.environ.get("CUDA_VISIBLE_DEVICES", "ALL")
-
         print("[env_setup] GPU (cuML): enabled")
         print(f"[env_setup] CUDA_VISIBLE_DEVICES: {visible_devices}")
 
@@ -37,7 +32,6 @@ def init_gpu():
         print("[env_setup] GPU (cuML): NOT available, falling back to CPU")
 
 
-#define wandb initialization check
 def init_wandb_support():
     global WANDB_AVAILABLE
 
@@ -50,9 +44,8 @@ def init_wandb_support():
         print("[env_setup] wandb:      NOT available")
 
 
-#define shared wandb init function
 def init_wandb(project, name, config=None, group=None, tags=None):
-    #(returns a real wandb run if available, otherwise a dummy run object)
+    # Returns a real wandb run if W&B is available, otherwise a silent no-op object.
     if WANDB_AVAILABLE:
         import wandb
         return wandb.init(
@@ -67,8 +60,9 @@ def init_wandb(project, name, config=None, group=None, tags=None):
         return DummyRun()
 
 
-#dummy run so scripts can still work even if wandb is unavailable
 class DummyRun:
+    """Silent no-op replacement for a wandb run object."""
+
     def log(self, *args, **kwargs):
         pass
 
@@ -76,6 +70,6 @@ class DummyRun:
         pass
 
 
-#run setup immediately when this file is imported
+# Run on import so every script that imports this file gets a consistent environment.
 init_gpu()
 init_wandb_support()

@@ -115,6 +115,12 @@ wandb login
 
 If W&B is not installed or not configured, all scripts still run normally — tracking is silently skipped.
 
+> **Note:** `wandb` is included in `requirements.txt` and will be installed by default. On a fresh machine without a W&B account, running the scripts may trigger an interactive login prompt. To suppress this, run the following once before executing any script:
+> ```bash
+> wandb disabled
+> ```
+> This disables tracking without affecting any results or terminal output.
+
 ---
 
 ## Execution Order
